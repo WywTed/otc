@@ -50,8 +50,8 @@
 		}
 
 		.buy_title {
-			font-size: 25px;
-			margin: 15px;
+			font-size: 20px;
+			margin: 10px;
 		}
 
 		.user_tx {
@@ -101,6 +101,13 @@
 			font-size: 10px;
 			font-family: Consolas;
 		}
+		.fb_title {
+			margin-left: 10px;
+			font-size: 10px;
+		}
+		/*.mui-card{
+			margin: 0px;
+		}*/
 	</style>
 </head>
 
@@ -223,7 +230,24 @@
 		</div>
 	</div>
 
-	<div class="mui-row" style="margin-top: 10px;margin-bottom: 20%;">
+	<div class="mui-col-sm-12">
+		<div class="fb_title">
+			选择对方收款账号：
+		</div>
+		<div class="mui-card" style="margin: 0px;">
+			<form class="mui-input-group ">
+				<div class="mui-input-row mui-radio" style="display: none" id="AlipayDiv">
+					<label>支付宝  <span id="AlipayArea"></span> </label>
+					<input name="payType" value="alipay" type="radio" checked/>
+				</div>
+				<div class="mui-input-row mui-radio"  style="display: none" id="UnionpayDiv">
+					<label>银行卡  <span id="UnionpayArea"></span> </label>
+					<input name="payType" value="unionpay" type="radio"/>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="mui-row" style="margin-top: 10px;margin-bottom: 15%;">
 		<div class="mui-col-xs-12">
 			<div class="user_tx">
 				<div class="">
@@ -272,7 +296,7 @@
     jsAjax.getPrices(function(data){
         prices = data;
         $(".coinprice").text(prices.usdt);
-	}, function (error) {
+    }, function (error) {
         mui.alert(error.responseJSON.message)
     })
 
@@ -288,6 +312,15 @@
         $("#GdMaxAmount").text(data.preTrade.maxAmount);
         $("#GdAllAmount").text(data.preTrade.allAmount);
         $("#GdRestAmount").text(data.preTrade.restAmount);
+
+        if(data.payChannels.alipay) {
+            $("#AlipayDiv").show();
+            $("#AlipayArea").text(data.payChannels.alipay.payAccount);
+        }
+        if(data.payChannels.unionpay) {
+            $("#UnionpayDiv").show();
+            $("#UnionpayArea").text(data.payChannels.unionpay.payAccount)
+        }
     });
 
     /*document.querySelector(".buy_btn").onclick = function() {
@@ -327,27 +360,28 @@
         $("#GdMoney").val(jsAjax.numFormat(
             jsAjax.numMulti(ele.value, info.preTrade.ideaUnivalent), 4)); // ele.value * info.preTrade.ideaUnivalent
         // 填充usdt的显示
-		
+
         $(".coinamount").text(jsAjax.numFormat(jsAjax.numDiv(
-                jsAjax.numMulti(ele.value, info.preTrade.ideaUnivalent),
-				prices.usdt),
-			4));
+            jsAjax.numMulti(ele.value, info.preTrade.ideaUnivalent),
+            prices.usdt),
+            4));
 
     }
 
     function submitTrade(){
         var data = {
-			preId: info.preTrade.id,
-			amount: $("#GdAmount").val()
-		};
+            preId: info.preTrade.id,
+            amount: $("#GdAmount").val(),
+            payChannelType: $("input[name=payType]:checked").val()
+        };
         var params = {
             data: data,
-			url: "/trade/order/submit",
-			type: "post"
-		};
+            url: "/trade/order/submit",
+            type: "post"
+        };
         jsAjax.ajax(params, function(data) {
-            mui.alert("购买成功")
-            location.href = "order_list.html";
+            mui.toast("购买成功")
+            location.href = "orderDetail.html?id=" + data;
         }, function(XMLHttpRequest) {
             if(XMLHttpRequest == "relogin") {
                 mui.alert("登陆过期，请重新登陆")
@@ -356,7 +390,7 @@
                 mui.alert(XMLHttpRequest.responseJSON.message)
             }
         });
-	}
+    }
 
 
 </script>

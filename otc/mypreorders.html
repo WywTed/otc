@@ -244,7 +244,7 @@
     function getPreTrade(type, page, callback) {
         console.log("获取挂单信息")
         var params = {};
-        params.url = "/trade/pre/list?size=10&type=" + type + "&page=" + page;
+        params.url = "/trade/pre/list?size=10&listType=member&type=" + type + "&page=" + page;
         jsAjax.ajax(params, function(data) {
             console.log(data)
             scrollPage[type] = data.page

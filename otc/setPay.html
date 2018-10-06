@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>收付款设置</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/icons-extra.css"/>
+		<style type="text/css">		
+			.mui-icon-extra{
+				margin-right: 10px;
+			}
+			
+			span.type_span{
+				float: right;
+				margin-right: 8%;
+				padding-top: 2px;
+			}
+			.wsz{
+				color: #C8C7CC;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">收付款设置</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" href="">					
+					<a class="mui-navigate-right"><span class="mui-icon-extra mui-icon-extra-card"></span>绑定银行卡<span class="type_span">已绑定</span></a>
+				</li>
+				<li class="mui-table-view-cell" href="">					
+					<a class="mui-navigate-right"><span class="mui-icon-extra mui-icon-extra-alipay"></span>绑定支付宝<span class="type_span wsz">未设置</span></a>
+
+				</li>
+
+			</ul>
+		</div>
+
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			mui.ready(function() {
+				mui(".mui-table-view").on("tap", ".mui-table-view-cell", function() {
+					var _url = this.getAttribute("href");
+					console.log(_url)
+					location.href = _url;
+				});
+			})
+		</script>
+	</body>
+
+</html>

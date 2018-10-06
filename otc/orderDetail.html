@@ -41,6 +41,9 @@
 			width: 40%;
 			border-radius: 30px
 		}
+		.fb_title{
+			margin: 10px;
+		}
 	</style>
 </head>
 
@@ -97,7 +100,7 @@
 			<div class="info_content" id="CreateTimeArea"></div>
 		</li>
 	</ul>
-	<ul class="mui-table-view">
+	<!--<ul class="mui-table-view">
 		<li class="mui-table-view-cell">
 			<div class="order_num">
 				收款方式：
@@ -118,7 +121,66 @@
 			</div>
 			<div class="" style="float: left;" id="AlipayArea"></div>
 		</li>
-	</ul>
+	</ul>-->
+	<div id="PaymentArea" style="display: none">
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell">
+				<div class="order_num">
+					收款方式：
+				</div>
+				<div class="" style="float: right;color: blue;" id="ToPayChannelTypeArea"></div>
+			</li>
+			<li class="mui-table-view-cell">
+				<div class="" style="float: left; width: 40%;">
+					姓名
+				</div>
+				<div class="" style="float: left;" id="ToRealNameArea"></div>
+			</li>
+			<li class="mui-table-view-cell">
+				<div class="" style="float: left; width: 40%;">
+					账号
+				</div>
+				<div class="" style="float: left;" id="ToPayAccountArea"></div>
+			</li>
+		</ul>
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell">
+				<div class="order_num">
+					付款方式：
+				</div>
+				<div class="" style="float: right;color: blue;" id="FromPayChannelTypeArea"></div>
+			</li>
+			<li class="mui-table-view-cell">
+				<div class="" style="float: left; width: 40%;">
+					姓名
+				</div>
+				<div class="" style="float: left;" id="FromRealNameArea"></div>
+			</li>
+			<li class="mui-table-view-cell">
+				<div class="" style="float: left; width: 40%;">
+					账号
+				</div>
+				<div class="" style="float: left;" id="FromPayAccountArea"></div>
+			</li>
+		</ul>
+	</div>
+	<div class="mui-col-sm-12" id="SelectArea" style="display: none;">
+		<div class="fb_title">
+			选择对方收款账号：
+		</div>
+		<div class="mui-card">
+			<form class="mui-input-group ">
+				<div class="mui-input-row mui-radio" style="display: none" id="AlipayDiv">
+					<label>支付宝  <span id="AlipayArea"></span> </label>
+					<input name="payType" value="alipay" type="radio" checked/>
+				</div>
+				<div class="mui-input-row mui-radio"  style="display: none" id="UnionpayDiv">
+					<label>银行卡  <span id="UnionpayArea"></span> </label>
+					<input name="payType" value="unionpay" type="radio"/>
+				</div>
+			</form>
+		</div>
+	</div>
 	<ul class="mui-table-view">
 		<li class="mui-table-view-cell">
 			<div class="order_num">
@@ -138,6 +200,7 @@
 			<div class="" style="float: left;" id="UsdtAmountArea"></div>
 		</li>
 	</ul>
+
 	<div class="mui-button-row">
 		<!--<button type="button" class="mui-btn mui-btn-danger">取消订单</button>-->
 		<button type="button" class="mui-btn mui-btn-primary" id="MarkPayBtn" style="display: none;" onclick="ensurePay()">标记已付款</button>
@@ -150,10 +213,26 @@
 <script>
     mui.init();
     var id = jsAjax.getQueryString("id");
+    var tradeType = "";
+
+    /*(function($){
+
+        jsAjax.getPayChannel(function(data){
+            if(data.alipay) {
+                $("#AlipayDiv").show();
+                $("#AlipayRadio").text(data.alipay.payAccount);
+            }
+            if(data.unionpay) {
+                $("#UnionpayDiv").show();
+                $("#UnionpayRadio").text(data.unionpay.payAccount)
+            }
+        })
+    })(mui);*/
+
     jsAjax.getOrder(id ,function(data){
         console.log(data);
         var trade = data.trade;
-        var buyer = data.buyer;
+        tradeType = trade.tradeType;
         var seller = data.seller;
         $("#TradeIdArea").text(trade.id)
         var ensureStatus = trade.ensureStatus;
@@ -168,17 +247,39 @@
         }else{
             $("#EnsureStatusDisplayArea").text("未知");
         }
-        $("#SellerNameArea").text(seller.name + " / " + seller.mobile);
+        $("#SellerNameArea").text(trade.sellerName + " / " + trade.sellerTel);
         $("#MoneyArea").text(trade.money);
         $("#AmountArea").text(trade.amount);
         $("#UnivalentArea").text(trade.univalent);
         $("#CreateTimeArea").text(jsAjax.formatLongTime(trade.createTime))
-        $("#RealNameArea").text(seller.realName);
-        $("#AlipayArea").text(seller.alipayAddress);
+        // $("#RealNameArea").text(seller.realName);
+        // $("#AlipayArea").text(seller.alipayAddress);
         $("#CoinTypeArea").text(trade.coinType)
 
         $("#UsdtPriceArea").text(trade.usdtPrice);
         $("#UsdtAmountArea").text(trade.usdtAmount);
+
+        // todo 设置支付和收款信息
+		if(trade.fromPayAccount && trade.toPayAccount) {
+            $("#PaymentArea").show();
+            $("#FromRealNameArea").text(trade.fromRealName);
+            $("#ToRealNameArea").text(trade.toRealName);
+            $("#FromPayAccountArea").text(trade.fromPayAccount);
+            $("#ToPayAccountArea").text(trade.toPayAccount);
+            $("#FromPayChannelTypeArea").text(trade.fromPayChannelType);
+            $("#ToPayChannelTypeArea").text(trade.toPayChannelType);
+        }else{
+            $("#SelectArea").show();
+            if(trade.sellerPayChannels.alipay){
+                $("#AlipayDiv").show();
+                $("#AlipayArea").text(data.payChannels.alipay.payAccount);
+			}
+			if(trade.sellerPayChannels.unionpay) {
+                $("#UnionpayDiv").show();
+                $("#UnionpayArea").text(data.payChannels.unionpay.payAccount)
+            }
+		}
+
     });
 
     function ensurePay(){
@@ -189,11 +290,12 @@
             }
             var params = {
                 type: "post",
-                url: "/trade/order/ensure4pay/" + id
+                url: "/trade/order/ensure4pay/" + id,
+
             };
             jsAjax.ajax(params, function(data){
-                mui.alert("标记付款成功");
-				mui.back();
+                mui.toast("标记付款成功");
+                location.href = "order_list.html";
             },function (XMLHttpRequest) {
                 if(XMLHttpRequest == "relogin") {
                     mui.alert("登陆过期，请重新登陆")

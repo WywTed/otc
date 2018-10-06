@@ -158,6 +158,13 @@ var jsAjax = new function() {
         this.ajax(param, successCallback, errorCallback);
     }
 
+    this.getPayChannel = function(succesCallback, errorCallback) {
+        var param = {
+            url: "/payment/channel"
+        }
+        this.ajax(param, succesCallback, errorCallback);
+    };
+
     /**
      * 获取币价
      * @param successCallback

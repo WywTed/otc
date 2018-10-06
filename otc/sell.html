@@ -345,8 +345,8 @@
             type: "post"
         };
         jsAjax.ajax(params, function(data) {
-            mui.alert("出售成功")
-            location.href = "order_list.html";
+            mui.toast("出售成功")
+            location.href = "orderDetail3.html?id=" + data;
         }, function(XMLHttpRequest) {
             if(XMLHttpRequest == "relogin") {
                 mui.alert("登陆过期，请重新登陆")
