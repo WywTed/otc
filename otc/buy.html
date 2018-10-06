@@ -168,7 +168,7 @@
 				<span id="GdFinishedCount">***</span>
 			</div>
 			<div class="user_info2_text">
-				历史成交
+				成交率
 			</div>
 		</div>
 	</div>
@@ -215,9 +215,9 @@
 		<div class="mui-col-xs-12">
 			<div class="user_tx">
 				<div class="">
-					等值usdt转换：
+					等值USDT转换：
 					<br>
-					当前 USDT 价格: <span class="coinprice usdt"></span> CNY,  您此次购买的tf相当于 <span class="coinamount usdt">0</span> 个 USDT
+					当前 USDT 价格: <span class="coinprice usdt"></span> CNY,  您此次购买的TF相当于 <span class="coinamount usdt">0</span> 个 USDT
 				</div>
 			</div>
 		</div>
@@ -258,7 +258,9 @@
 <script src="js/arttmpl.js"></script>
 <script type="text/template" id="tips">
 	<%
-	<div class="tj_left">购买价格</div><div class="tj_right"><%=item.univalent%>CNY</div><div class="mui-clearfix"></div><div class="tj_left">购买金额</div><div class="tj_right"><%=item.money%> CNY</div><div class="mui-clearfix"></div><div class="tj_left">购买数量</div><div class="tj_right"><%=item.amount%> TF</div><div class="mui-clearfix"></div>
+	<div class="tj_left">购买价格</div><div class="tj_right"><%=item.univalent%>CNY</div><div class="mui-clearfix"></div>
+	<div class="tj_left">购买数量</div><div class="tj_right"><%=item.amount%> TF</div><div class="mui-clearfix"></div>
+	<div class="tj_left">购买金额</div><div class="tj_right"><%=item.money%> CNY</div><div class="mui-clearfix"></div>
 	<div class="tj_ts">提醒：请确认价格再下单，下单后此交易的数字货币将托管锁定，请放心购买。</div>
 	%>
 </script>
