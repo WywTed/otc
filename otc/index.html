@@ -259,12 +259,12 @@
 					<div class="mui-card">
 						<div class="mui-card-content">
 							<div class="mui-card-content-inner">
-								市场参考价：<span id="CoinPrice"></span> CNY
+								市场参考单价：<span id="CoinPrice"></span> CNY
 							</div>
 							<form class="mui-input-group" id="PreTradeForm">
 								<div class="mui-input-row">
 									<label>交易价格：</label>
-									<input type="number" placeholder="请输入期望价格" id="IdeaPriceIpt" />
+									<input type="number" placeholder="请输入每一枚TOKEN期望价格" id="IdeaPriceIpt" />
 								</div>
 								<!--<div class="mui-input-row input-sell-min">
 									<label>最低价格：</label>
@@ -311,7 +311,7 @@
 					<div class="user_text" id="UserName">****</div>
 					<div class="user_text" id="UserMobile">****</div>
 					<div class="user_text">
-						<!--交易<span id="UserTradeCount">0</span>|-->好评<span id="UserUpcount">***</span>|信任<span id="UserScore">***</span>
+						<!--交易<span id="UserTradeCount">0</span>|-->交易次数<span id="UserUpcount">***</span>|成交率<span id="UserScore">***</span>
 					</div>
 					<div class="user_text">
 						可用资产：<span id="UserBalance">0</span>TF 冻结资产：<span id="UserFreeze">0</span>TF
@@ -379,8 +379,8 @@
 			<h4 class="mui-ellipsis"><%=item.id%> | <%=name%></h4>
 			<span class="mui-badge mui-badge-success">支付宝</span>
 			<div class="mui-clearfix"></div>
-			<h5>好评**|信任**</h5>
-			<p class="mui-h6 mui-ellipsis">限额 <%=item.minAmount%> - <%=item.maxAmount%></p>
+			<h5>交易次数**|成交率**</h5>
+			<p class="mui-h6 mui-ellipsis">限额数量 <%=item.minAmount%> - <%=item.maxAmount%></p>
 		</div>
 		<div class="mui-table-cell mui-col-xs-2 mui-text-right">
 			<span class="mui-h5"><%=item.ideaUnivalent%> CNY</span>
@@ -396,8 +396,8 @@
 			<h4 class="mui-ellipsis"><%=item.id%> | <%=name%></h4> <!--<%=item%>-->
 			<span class="mui-badge mui-badge-success">支付宝</span>
 			<div class="mui-clearfix"></div>
-			<h5>好评**|信任**</h5>
-			<p class="mui-h6 mui-ellipsis">限额 <%=item.minAmount%> - <%=item.maxAmount%></p>
+			<h5>交易次数**|成交率**</h5>
+			<p class="mui-h6 mui-ellipsis">限额数量 <%=item.minAmount%> - <%=item.maxAmount%></p>
 		</div>
 		<div class="mui-table-cell mui-col-xs-2 mui-text-right">
 			<span class="mui-h5"><%=item.ideaUnivalent%> CNY</span>
@@ -699,6 +699,7 @@
             mui.alert("最大量请输入数字")
             return;
         }
+		
         var data = {};
         //data.tradeType = $("input[name=tradeType]").val();
         data.tradeType = _tradeType;
