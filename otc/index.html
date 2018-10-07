@@ -274,7 +274,8 @@
 					<div class="mui-card">
 						<div class="mui-card-content">
 							<div class="mui-card-content-inner">
-								市场参考单价：<span id="CoinPrice"></span> CNY
+								<p>市场参考单价：<span id="CoinPrice"></span> CNY</p>
+								<p >订单金额最少400CNY</p>
 							</div>
 							<form class="mui-input-group" id="PreTradeForm">
 								<div class="mui-input-row">
@@ -400,12 +401,8 @@
 			<h4 class="mui-ellipsis"><%=item.showId%> | <%=name%></h4>
 			<span class="mui-badge mui-badge-success" id="BuyPayChannelArea"><%=paychannel%></span>
 			<div class="mui-clearfix"></div>
-			<span class="mui-badge mui-badge-success">支付宝</span>
-			<div class="mui-clearfix"></div><br>
-			<p class="mui-h6 mui-ellipsis">限额数量 <%=item.minAmount%> - <%=item.maxAmount%></p>
-		</div>
-		<div class="mui-table-cell mui-col-xs-6">
 			<h5>交易次数**|成交率**</h5>
+			<p class="mui-h6 mui-ellipsis">限额数量 <%=item.minAmount%> - <%=item.maxAmount%></p>
 		</div>
 		<div class="mui-table-cell mui-col-xs-2 mui-text-right">
 			<span class="mui-h5"><%=item.ideaUnivalent%> CNY</span>
