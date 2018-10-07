@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+	<head>
 	<meta charset="utf-8" />
 	<title>OTC</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
@@ -199,10 +199,10 @@
 		<span class="mui-icon mui-icon-undo"></span>
 		<span class="mui-tab-label">购买</span>
 	</a>
-		<a id="Tab2" class="mui-tab-item" href="#item2mobile" >
-            <span class="mui-icon mui-icon-redo"></span>
-            <span class="mui-tab-label">出售</span>
-        </a>
+	<a id="Tab2" class="mui-tab-item" href="#item2mobile" >
+		<span class="mui-icon mui-icon-redo"></span>
+		<span class="mui-tab-label">出售</span>
+	</a>
 	<a id="Tab3" class="mui-tab-item" href="#item3mobile"> <!--onclick="changeTab('item3mobile')"-->
 		<!--href="#item3mobile"-->
 		<span class="mui-icon mui-icon-paperplane"></span>
@@ -256,7 +256,7 @@
 							</div>
 						</form>
 					</div>
-                    <!--<div class="fb_title">
+					<!--<div class="fb_title">
                         选择支付或收款账号：
                     </div>
                     <div class="mui-card">
@@ -290,13 +290,14 @@
 									<input type="number" placeholder="请输入最高价格" id="MaxPriceIpt" />
 								</div>
 								<div class="mui-input-row">
-									<label>总量：</label>
-									<input type="number" placeholder="请输入总量" id="AllAmountIpt" />
-								</div>
-								<div class="mui-input-row">
 									<label>交易最小量：</label>
 									<input type="number" placeholder="请输入最小量" id="MinAmountIpt" />
 								</div>
+								<div class="mui-input-row">
+									<label>交易最大量：</label>
+									<input type="number" placeholder="请输入最大量" id="AllAmountIpt" />
+								</div>
+
 								<!--<div class="mui-input-row">
 									<label>最大量：</label>
 									<input type="number" placeholder="请输入最大量" id="MaxAmountIpt" disabled/>
@@ -326,7 +327,7 @@
 					<div class="user_text" id="UserName">****</div>
 					<div class="user_text" id="UserMobile">****</div>
 					<div class="user_text">
-						<!--交易<span id="UserTradeCount">0</span>|-->好评<span id="UserUpcount">***</span>|信任<span id="UserScore">***</span>
+						<!--交易<span id="UserTradeCount">0</span>|-->交易次数<span id="UserUpcount">***</span>|成交率<span id="UserScore">***</span>
 					</div>
 					<div class="user_text">
 						可用资产：<span id="UserBalance">0</span>TF 冻结资产：<span id="UserFreeze">0</span>TF
@@ -375,11 +376,11 @@
 								设置支付宝账号
 							</a>
 						</li>
-                        <li class="mui-table-view-cell">
-                            <a class="mui-navigate-right" href="addPay.html">
-                                设置银行卡账号
-                            </a>
-                        </li>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right" href="addPay.html">
+								设置银行卡账号
+							</a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -399,8 +400,12 @@
 			<h4 class="mui-ellipsis"><%=item.showId%> | <%=name%></h4>
 			<span class="mui-badge mui-badge-success" id="BuyPayChannelArea"><%=paychannel%></span>
 			<div class="mui-clearfix"></div>
-			<h5>好评**|信任**</h5>
-			<p class="mui-h6 mui-ellipsis">限额 <%=item.minAmount%> - <%=item.maxAmount%></p>
+			<span class="mui-badge mui-badge-success">支付宝</span>
+			<div class="mui-clearfix"></div><br>
+			<p class="mui-h6 mui-ellipsis">限额数量 <%=item.minAmount%> - <%=item.maxAmount%></p>
+		</div>
+		<div class="mui-table-cell mui-col-xs-6">
+			<h5>交易次数**|成交率**</h5>
 		</div>
 		<div class="mui-table-cell mui-col-xs-2 mui-text-right">
 			<span class="mui-h5"><%=item.ideaUnivalent%> CNY</span>
@@ -416,7 +421,7 @@
 			<h4 class="mui-ellipsis"><%=item.showId%> | <%=name%></h4> <!--<%=item%>-->
 			<span class="mui-badge mui-badge-success" id="SellPayChannelArea"><%=paychannel%></span>
 			<div class="mui-clearfix"></div>
-			<h5>好评**|信任**</h5>
+			<h5>交易次数**|成交率**</h5>
 			<p class="mui-h6 mui-ellipsis">限额 <%=item.minAmount%> - <%=item.maxAmount%></p>
 		</div>
 		<div class="mui-table-cell mui-col-xs-2 mui-text-right">
@@ -521,7 +526,7 @@
         mui(".mui-bar-tab").on("tap", ".mui-tab-item",function(event){
             var tab = this.id;
             changeTab(tab)
-		})
+        })
     })(mui);
 
     function init() {
@@ -548,10 +553,10 @@
 
 
 
-	function toBuypage(id){
+    function toBuypage(id){
         location.href = "buy.html?id=" + id;
-	}
-	function toSellpage(id){
+    }
+    function toSellpage(id){
         location.href = "sell.html?id=" + id;
     }
 
@@ -682,12 +687,12 @@
         // var _maxAmount = $("#MaxAmountIpt").val();
         var _maxAmount = _allAmount;
         if(!_ideaPrice) {
-            mui.alert("请输入期望价格")
+            mui.alert("请输入交易价格")
             return;
         }
 
         if(isNaN(_ideaPrice)) {
-            mui.alert("期望价格输入数字")
+            mui.alert("交易价格输入数字")
             return;
         }
         /*if(_tradeType == "sell" && !_minPrice) {
@@ -707,7 +712,7 @@
             return;
         }*/
         if(!_allAmount) {
-            mui.alert("请输入总量")
+            mui.alert("请输入交易最大量")
             return;
         }
         if(isNaN(_allAmount)) {
@@ -730,6 +735,17 @@
             mui.alert("最大量请输入数字")
             return;
         }
+
+        if(Number(_maxAmount)< Number(_minAmount)){
+            mui.alert("交易最大量不小于交易最小量")
+            return;
+        }
+        if(Number(_minAmount)*Number(_ideaPrice)<400){
+            mui.alert("交易最小金额不小于400元，请增加交易最小量")
+            return;
+        }
+
+
         var data = {};
         //data.tradeType = $("input[name=tradeType]").val();
         data.tradeType = _tradeType;

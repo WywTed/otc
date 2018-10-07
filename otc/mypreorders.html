@@ -102,6 +102,8 @@
 		.mui-segmented-control.mui-scroll-wrapper .mui-control-item {
 			width: 40%;
 		}
+		.mui-text-center{
+		}
 	</style>
 </head>
 
@@ -120,24 +122,33 @@
 				<a class="mui-control-item" href="#item2mobile">
 					已完成
 				</a>
-
+				<!--<a class="mui-control-item" href="#item3mobile">
+					已取消
+				</a>-->
 			</div>
 		</div>
 		<div class="mui-slider-group">
 			<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
 				<div id="scroll1" class="mui-scroll-wrapper">
-					<div class="mui-scroll">
-						<ul class="mui-table-view"></ul>
+					<div class="mui-scroll" id="tfwaiting-scroll">
+						<ul class="mui-table-view" id="pre-normal"></ul>
 					</div>
 				</div>
 			</div>
 			<div id="item2mobile" class="mui-slider-item mui-control-content">
 				<div class="mui-scroll-wrapper">
-					<div class="mui-scroll">
-						<ul class="mui-table-view"></ul>
+					<div class="mui-scroll" id="tffinished-scroll">
+						<ul class="mui-table-view" id="pre-finished"></ul>
 					</div>
 				</div>
 			</div>
+			<!--<div id="item3mobile" class="mui-slider-item mui-control-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll" id="tfcanceled-scroll">
+						<ul class="mui-table-view" id="pre-canceled"></ul>
+					</div>
+				</div>
+			</div>-->
 
 		</div>
 	</div>
@@ -145,27 +156,36 @@
 <script src="js/mui.min.js"></script>
 <script src="js/app.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/arttmpl.js"></script>
 <script src="js/mui.pullToRefresh.js"></script>
 <script src="js/mui.pullToRefresh.material.js"></script>
-<script type="text/template" id="tpl-sell">
+<script type="text/template" id="pre">
 	<%
 	<div class="mui-table">
-		<div class="mui-table-cell mui-col-xs-10">
-			<h4 class="mui-ellipsis"><%=item.id%> | <%=name%></h4> <!--<%=item%>-->
+		<div class="mui-table-cell mui-col-xs-9">
+			<h4 class="mui-ellipsis"><%=item.showId%> | <%=name%></h4> <!--<%=item%>-->
 			<span class="mui-badge mui-badge-success">支付宝</span>
 			<div class="mui-clearfix"></div>
-			<h5>好评**|信任**</h5>
-			<p class="mui-h6 mui-ellipsis">限额 <%=item.minAmount%> - <%=item.maxAmount%></p>
+			<h5>交易次数**|成交率**</h5>
+			<p class="mui-h6 mui-ellipsis">限额数量 <%=item.minAmount%> - <%=item.maxAmount%></p>
 		</div>
-		<div class="mui-table-cell mui-col-xs-2 mui-text-right">
+		<div class="mui-table-cell mui-col-xs-3 mui-text-center">
 			<span class="mui-h5"><%=item.ideaUnivalent%> CNY</span>
-			<button class="list_btn" name="<%=item.id%>">购买<%=item.coinType%></button>
+			<p class="list_btn" name="<%=item.id%>"><%=item.tradeType%></p>
+			<button class="mui-btn" onclick="cancelPreTrade(<%=item.id%>)">取消</button>
 		</div>
 	</div>
 	%>
 </script>
 <script>
     mui.init();
+
+    var scrollPage = {
+        // 存放上拉的次数，查询数据时需要分页
+        normal: 0,
+        finished: 0,
+    };
+
     (function($) {
         //阻尼系数
         var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -176,14 +196,14 @@
         });
         $.ready(function() {
             //循环初始化所有下拉刷新，上拉加载。
-            $("#tfbuy-scroll").pullToRefresh({
+            $("#tfwaiting-scroll").pullToRefresh({
                 down: {
                     callback: function() {
                         console.log("刷新购买单数据")
                         var self = this;
                         setTimeout(function() {
-                            getPreTrade("sell", 1, function(data){
-                                fill(data, "sell", true)
+                            getPreTrade("normal", 1, function(data){
+                                fill(data, "normal", true)
                             });
                             self.endPullDownToRefresh()
                         }, 1000);
@@ -194,16 +214,45 @@
                         console.log("加载更多购买单数据")
                         var self = this;
                         setTimeout(function() {
-                            getPreTrade("sell", scrollPage.sell + 1, function(data){
-                                fill(data, "sell")
+                            getPreTrade("normal", scrollPage.normal + 1, function(data){
+                                fill(data, "normal")
                             });
                             self.endPullUpToRefresh();
                         }, 1000);
                     }
                 }
             })
-            getPreTrade("sell", 1, function(data){
-                fill(data, "sell", true)
+            $("#tffinished-scroll").pullToRefresh({
+                down: {
+                    callback: function() {
+                        console.log("刷新购买单数据")
+                        var self = this;
+                        setTimeout(function() {
+                            getPreTrade("finished", 1, function(data){
+                                fill(data, "finished", true)
+                            });
+                            self.endPullDownToRefresh()
+                        }, 1000);
+                    }
+                },
+                up: {
+                    callback: function() {
+                        console.log("加载更多购买单数据")
+                        var self = this;
+                        setTimeout(function() {
+                            getPreTrade("finished", scrollPage.finished + 1, function(data){
+                                fill(data, "finished")
+                            });
+                            self.endPullUpToRefresh();
+                        }, 1000);
+                    }
+                }
+            })
+            getPreTrade("normal", 1, function(data){
+                fill(data, "normal", true)
+            })
+            getPreTrade("finished", 1, function(data){
+                fill(data, "finished", true)
             })
         });
         document.querySelector("header").querySelector("a").onclick = function() {
@@ -212,16 +261,23 @@
         }
     })(mui);
 
-    function fill(data, type, reload) {
-        var doc = $("#tf-" + type);
+    function cancelPreTrade(id){
+        jsAjax.cancelPreTrade(id, function(data){
+            mui.toast("取消成功");
+            location.reload();
+        })
+	}
+
+    function fill(data, status, reload) {
+        var doc = $("#pre-" + status);
         if(reload) {
             doc.empty();
         }
-        doc.append(createPreOrderFragment(data.data, type));
-        scrollPage[type] = data.page
+        doc.append(createPreOrderFragment(data.data, status));
+        scrollPage[status] = data.page
     }
 
-    var createPreOrderFragment = function(preOrder, type) {
+    var createPreOrderFragment = function(preOrder, status) {
         var fragment = document.createDocumentFragment();
         var li;
         $.each(preOrder, function(index, value) {
@@ -231,7 +287,7 @@
                 value.preTrade.coinType = "TF";
             }
 
-            var str = template('tpl-' + type, {
+            var str = template('pre', {
                 item: value.preTrade,
                 name: value.name,
             })
@@ -241,13 +297,13 @@
         return fragment;
     }
 
-    function getPreTrade(type, page, callback) {
+    function getPreTrade(status, page, callback) {
         console.log("获取挂单信息")
         var params = {};
-        params.url = "/trade/pre/list?size=10&listType=member&type=" + type + "&page=" + page;
+        params.url = "/trade/pre/list?size=10&listType=member&status=" + status + "&page=" + page;
         jsAjax.ajax(params, function(data) {
             console.log(data)
-            scrollPage[type] = data.page
+            scrollPage[status] = data.page
             if(callback) {
                 callback(data)
             }

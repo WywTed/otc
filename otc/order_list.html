@@ -100,7 +100,7 @@
 		}
 
 		.mui-segmented-control.mui-scroll-wrapper .mui-control-item {
-			width: 40%;
+			width: 33%;
 		}
 		/*--------------------------------------*/
 
@@ -174,7 +174,9 @@
 				<a class="mui-control-item" href="#item2mobile">
 					已完成
 				</a>
-
+				<a class="mui-control-item" href="#item3mobile">
+					已取消
+				</a>
 			</div>
 		</div>
 		<div class="mui-slider-group">
@@ -192,7 +194,13 @@
 					</div>
 				</div>
 			</div>
-
+			<div id="item3mobile" class="mui-slider-item mui-control-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul class="mui-table-view" id="tf-order-canceled"></ul>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -249,7 +257,8 @@
 
     var scrollPage = {
         waiting: 1,
-        finished: 1
+        finished: 1,
+		canceled: 1
     };
 
     (function($) {
@@ -266,7 +275,7 @@
                 $(pullRefreshEl).pullToRefresh({
                     down: {
                         callback: function() {
-                            console.log("刷新购买单数据")
+                            console.log("刷新订单数据")
                             var self = this;
                             setTimeout(function() {
                                 self.endPullDownToRefresh()
@@ -274,6 +283,7 @@
                                 switch(index){
                                     case 0: type = "waiting";break;
                                     case 1: type = "finished";break;
+									case 2: type = "canceled";break;
                                     default: return;
                                 }
                                 getOrder(type, 1, function(data){
@@ -292,6 +302,7 @@
                                 switch(index){
                                     case 0: type = "waiting";break;
                                     case 1: type = "finished";break;
+                                    case 2: type = "canceled";break;
                                     default: return;
                                 }
                                 getOrder(type, scrollPage[type] + 1, function(data){
@@ -307,6 +318,9 @@
             })
             getOrder("finished", scrollPage.finished, function(data){
                 fill(data, "finished", true)
+            })
+            getOrder("canceled", scrollPage.canceled, function(data){
+                fill(data, "canceled", true)
             })
 			//
             mui(".mui-slider-group").on("tap", ".mui-table-view-cell", function() {
@@ -355,7 +369,6 @@
     }
 
     function getOrder(status, page, callback) {
-        console.log("获取挂单信息")
         var params = {};
         params.url = "/trade/order/list?size=10&status=" + status + "&page=" + page;
         jsAjax.ajax(params, function(data) {

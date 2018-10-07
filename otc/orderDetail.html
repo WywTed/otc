@@ -202,7 +202,7 @@
 	</ul>
 
 	<div class="mui-button-row">
-		<!--<button type="button" class="mui-btn mui-btn-danger">取消订单</button>-->
+		<button type="button" class="mui-btn mui-btn-danger" id="CancelBtn"  style="display: none;" onclick="cancelTrade()">取消订单</button>
 		<button type="button" class="mui-btn mui-btn-primary" id="MarkPayBtn" style="display: none;" onclick="ensurePay()">标记已付款</button>
 		<div style="display: none;" id="Tips">等待对方确认收款</div>
 	</div>
@@ -236,17 +236,29 @@
         var seller = data.seller;
         $("#TradeIdArea").text(trade.id)
         var ensureStatus = trade.ensureStatus;
-        if(ensureStatus == "ensure4pay"){
-            $("#Tips").show();
-            $("#EnsureStatusDisplayArea").text("待释放");
-        }else if(trade.ensureStatus == "none") {
-            $("#MarkPayBtn").show();
-            $("#EnsureStatusDisplayArea").text("待确认付款");
-        }else if(trade.ensureStatus == "ensure4get") {
-            $("#EnsureStatusDisplayArea").text("已释放");
-        }else{
-            $("#EnsureStatusDisplayArea").text("未知");
-        }
+
+        if(trade.status != "canceled"){
+            if(ensureStatus == "ensure4pay"){
+                $("#Tips").show();
+                $("#EnsureStatusDisplayArea").text("待释放");
+            }else if(trade.ensureStatus == "none") {
+                $("#MarkPayBtn").show();
+                $("#EnsureStatusDisplayArea").text("待确认付款");
+
+                if(tradeType == "sell"){
+                    // 可取消
+                    $("#CancelBtn").show();
+                }
+            }else if(trade.ensureStatus == "ensure4get") {
+                $("#EnsureStatusDisplayArea").text("已释放");
+            }else{
+                $("#EnsureStatusDisplayArea").text("未知");
+            }
+		}else{
+            $("#EnsureStatusDisplayArea").text("订单已取消");
+		}
+
+
         $("#SellerNameArea").text(trade.sellerName + " / " + trade.sellerTel);
         $("#MoneyArea").text(trade.money);
         $("#AmountArea").text(trade.amount);
@@ -270,17 +282,23 @@
             $("#ToPayChannelTypeArea").text(trade.toPayChannelType);
         }else{
             $("#SelectArea").show();
-            if(trade.sellerPayChannels.alipay){
+            if(data.sellerPayChannels.alipay){
                 $("#AlipayDiv").show();
-                $("#AlipayArea").text(data.payChannels.alipay.payAccount);
+                $("#AlipayArea").text(data.sellerPayChannels.alipay.payAccount);
 			}
-			if(trade.sellerPayChannels.unionpay) {
+			if(data.sellerPayChannels.unionpay) {
                 $("#UnionpayDiv").show();
-                $("#UnionpayArea").text(data.payChannels.unionpay.payAccount)
+                $("#UnionpayArea").text(data.sellerPayChannels.unionpay.payAccount)
             }
 		}
-
     });
+
+    function cancelTrade() {
+        jsAjax.cancelTrade(id, function(data){
+            mui.toast("取消成功");
+            location.href = "order_list.html";
+        })
+    }
 
     function ensurePay(){
         var btnArray = ['取消', '确认'];

@@ -53,7 +53,7 @@ var jsAjax = new function() {
             }; //请求头sessionid
         params.crossDomain = params.crossDomain || "true"; //默认true，异步请求
         //params.data.timestamp =Date.parse(new Date()).toString().slice(0,10);
-        if(params.type == "POST" || params.type == "post" || params.type == "put"|| params.type == "PUT"){
+        if(params.type == "POST" || params.type == "post" || params.type == "put"|| params.type == "PUT" || params.type == "delete" || params.type == "DELETE"){
             params.data = JSON.stringify(params.data);
         }
 
@@ -129,6 +129,30 @@ var jsAjax = new function() {
         }
         this.ajax(param, successCallback, errorCallback);
     }
+
+    this.cancelTrade = function(tradeId, successCallback, errorCallback) {
+        if(tradeId == null || tradeId == undefined) {
+            mui.toast("未找到订单");
+            return;
+        }
+        var param = {
+            url: "/trade/order/" + tradeId,
+            type: "post",
+        }
+        this.ajax(param, successCallback, errorCallback);
+    };
+
+    this.cancelPreTrade = function(preId, successCallback, errorCallback) {
+        if(preId == null || preId == undefined) {
+            mui.toast("未找到挂单");
+            return;
+        }
+        var param = {
+            url: "/trade/pre/" + preId,
+            type: "post",
+        }
+        this.ajax(param, successCallback, errorCallback);
+    };
 
     this.getMember = function(id, successCallback, errorCallback){
         if(id == null || id == undefined) {
