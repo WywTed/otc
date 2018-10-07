@@ -264,7 +264,7 @@
 							<form class="mui-input-group" id="PreTradeForm">
 								<div class="mui-input-row">
 									<label>交易价格：</label>
-									<input type="number" placeholder="请输入每一枚TOKEN期望价格" id="IdeaPriceIpt" />
+									<input type="number" placeholder="请输入每一枚Token期望价格" id="IdeaPriceIpt" />
 								</div>
 								<!--<div class="mui-input-row input-sell-min">
 									<label>最低价格：</label>
@@ -274,14 +274,15 @@
 									<label>最高价格：</label>
 									<input type="number" placeholder="请输入最高价格" id="MaxPriceIpt" />
 								</div>
-								<div class="mui-input-row">
-									<label>总量：</label>
-									<input type="number" placeholder="请输入总量" id="AllAmountIpt" />
-								</div>
-								<div class="mui-input-row">
+									<div class="mui-input-row">
 									<label>交易最小量：</label>
 									<input type="number" placeholder="请输入最小量" id="MinAmountIpt" />
 								</div>
+								<div class="mui-input-row">
+									<label>交易最大量：</label>
+									<input type="number" placeholder="请输入最大量" id="AllAmountIpt" />
+								</div>
+							
 								<!--<div class="mui-input-row">
 									<label>最大量：</label>
 									<input type="number" placeholder="请输入最大量" id="MaxAmountIpt" disabled/>
@@ -375,12 +376,15 @@
 <script type="text/template" id="tpl-buy">
 	<%
 	<div class="mui-table ">
-		<div class="mui-table-cell mui-col-xs-10">
-			<h4 class="mui-ellipsis"><%=item.id%> | <%=name%></h4>
-			<span class="mui-badge mui-badge-success">支付宝</span>
+		<div class="mui-table-cell mui-col-xs-4">
+			<h4 class="mui-ellipsis"><!--<%=item.id%>|-->  <%=name%></h4> 
 			<div class="mui-clearfix"></div>
-			<h5>交易次数**|成交率**</h5>
+			<span class="mui-badge mui-badge-success">支付宝</span>
+			<div class="mui-clearfix"></div><br>
 			<p class="mui-h6 mui-ellipsis">限额数量 <%=item.minAmount%> - <%=item.maxAmount%></p>
+		</div>
+		<div class="mui-table-cell mui-col-xs-6">
+		   	<h5>交易次数**|成交率**</h5>
 		</div>
 		<div class="mui-table-cell mui-col-xs-2 mui-text-right">
 			<span class="mui-h5"><%=item.ideaUnivalent%> CNY</span>
@@ -391,13 +395,15 @@
 </script>
 <script type="text/template" id="tpl-sell">
 	<%
-	<div class="mui-table ">
-		<div class="mui-table-cell mui-col-xs-10">
-			<h4 class="mui-ellipsis"><%=item.id%> | <%=name%></h4> <!--<%=item%>-->
-			<span class="mui-badge mui-badge-success">支付宝</span>
-			<div class="mui-clearfix"></div>
-			<h5>交易次数**|成交率**</h5>
+	<div class="mui-table">
+		<div class="mui-table-cell mui-col-xs-4">
+		<h4 class="mui-ellipsis"><!--<%=item.id%>|--> <%=name%></h4> <!--<%=item%>--> 
+		     <span class="mui-badge mui-badge-success">支付宝</span>
+			<div class="mui-clearfix"></div><br>
 			<p class="mui-h6 mui-ellipsis">限额数量 <%=item.minAmount%> - <%=item.maxAmount%></p>
+		</div>
+		<div class="mui-table-cell mui-col-xs-6">
+		   	<h5>交易次数**|成交率**</h5>
 		</div>
 		<div class="mui-table-cell mui-col-xs-2 mui-text-right">
 			<span class="mui-h5"><%=item.ideaUnivalent%> CNY</span>
@@ -651,12 +657,12 @@
         // var _maxAmount = $("#MaxAmountIpt").val();
         var _maxAmount = _allAmount;
         if(!_ideaPrice) {
-            mui.alert("请输入期望价格")
+            mui.alert("请输入交易价格")
             return;
         }
 
         if(isNaN(_ideaPrice)) {
-            mui.alert("期望价格输入数字")
+            mui.alert("交易价格输入数字")
             return;
         }
         /*if(_tradeType == "sell" && !_minPrice) {
@@ -676,7 +682,7 @@
             return;
         }*/
         if(!_allAmount) {
-            mui.alert("请输入总量")
+            mui.alert("请输入交易最大量")
             return;
         }
         if(isNaN(_allAmount)) {
@@ -699,6 +705,16 @@
             mui.alert("最大量请输入数字")
             return;
         }
+		
+		if(Number(_maxAmount)< Number(_minAmount)){
+		   mui.alert("交易最大量不小于交易最小量")
+		   return;
+		}
+		 if(Number(_minAmount)*Number(_ideaPrice)<400){
+		     mui.alert("交易最小金额不小于400元，请增加交易最小量")
+		   return;
+		 }
+		
 		
         var data = {};
         //data.tradeType = $("input[name=tradeType]").val();

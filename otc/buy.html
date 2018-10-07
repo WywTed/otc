@@ -187,12 +187,13 @@
 		</div>
 		<div class="mui-col-xs-5">
 			<div class="mui-input-group">
-				<div class="mui-input-row" style="margin-left:10px ;">
-					<label>CNY：</label>
-					<input type="text" id="GdMoney" class="mui-input-clear" readonly style="padding-right: 0;" />
+				<div class="mui-input-row">
+					<label>TF：</label>
+					<input type="number" id="GdAmount" max="999999" oninput="fitMoneyIpt(this)" class="mui-input-clear" placeholder="购买数量" style="padding-right: 0;" />
 				</div>
 			</div>
 		</div>
+		
 		<div class="mui-col-xs-2">
 			<div class="" style="text-align: center;margin-top: 5px;">
 				←
@@ -201,11 +202,11 @@
 				→
 			</div>
 		</div>
-		<div class="mui-col-xs-5">
+	   <div class="mui-col-xs-5">
 			<div class="mui-input-group">
-				<div class="mui-input-row">
-					<label>TF：</label>
-					<input type="number" id="GdAmount" max="999999" oninput="fitMoneyIpt(this)" class="mui-input-clear" placeholder="购买数量" style="padding-right: 0;" />
+				<div class="mui-input-row" style="margin-left:10px ;">
+					<label>CNY：</label>
+					<input type="text" id="GdMoney" class="mui-input-clear" readonly disabled="true" style="padding-right: 0;" />
 				</div>
 			</div>
 		</div>
@@ -258,9 +259,7 @@
 <script src="js/arttmpl.js"></script>
 <script type="text/template" id="tips">
 	<%
-	<div class="tj_left">购买价格</div><div class="tj_right"><%=item.univalent%>CNY</div><div class="mui-clearfix"></div>
-	<div class="tj_left">购买数量</div><div class="tj_right"><%=item.amount%> TF</div><div class="mui-clearfix"></div>
-	<div class="tj_left">购买金额</div><div class="tj_right"><%=item.money%> CNY</div><div class="mui-clearfix"></div>
+	<div class="tj_left">购买价格</div><div class="tj_right"><%=item.univalent%>CNY</div><div class="mui-clearfix"></div><div class="tj_left">购买数量</div><div class="tj_right"><%=item.amount%> TF</div><div class="mui-clearfix"></div><div class="tj_left">购买金额</div><div class="tj_right"><%=item.money%> CNY</div><div class="mui-clearfix"></div>
 	<div class="tj_ts">提醒：请确认价格再下单，下单后此交易的数字货币将托管锁定，请放心购买。</div>
 	%>
 </script>
