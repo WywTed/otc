@@ -419,7 +419,7 @@
 			<span class="mui-badge mui-badge-success" id="SellPayChannelArea"><%=paychannel%></span>
 			<div class="mui-clearfix"></div>
 			<h5>交易次数**|成交率**</h5>
-			<p class="mui-h6 mui-ellipsis">限额 <%=item.minAmount%> - <%=item.maxAmount%></p>
+			<p class="mui-h6 mui-ellipsis">限额数量 <%=item.minAmount%> - <%=item.maxAmount%></p>
 		</div>
 		<div class="mui-table-cell mui-col-xs-2 mui-text-right">
 			<span class="mui-h5"><%=item.ideaUnivalent%> CNY</span>
@@ -634,7 +634,7 @@
         $.each(preOrder, function(index, value) {
             li = document.createElement('li');
             li.className = 'mui-table-view-cell ' + value.memberFlag;
-            if(value.preTrade.coinType == "tfcoin"){
+            if(value.preTrade.coinType == "TF"){
                 value.preTrade.coinType = "TF";
             }
             var paychannel = "支付宝";
@@ -755,7 +755,7 @@
         data.allAmount = _allAmount;
         // data.payChannel = $("#PayChannelIpt").val();
         data.memberId = 16;
-        data.coinType = "tfcoin";
+        data.coinType = "TF";
         // data.payChannelType = $("input[name=payType]:checked").val();
         var params = {
             data: data,
@@ -782,7 +782,7 @@
             return;
         }
         var params = {};
-        params.url = "/coin/market/price?coinType=tfchain";
+        params.url = "/coin/market/price?coinType=TF";
         jsAjax.ajax(params, function(data) {
             if(callback) {
                 callback(data)
