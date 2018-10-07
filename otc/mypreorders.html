@@ -185,7 +185,7 @@
         normal: 0,
         finished: 0,
     };
-
+    document.querySelector(".mui-content").setAttribute("style","height: "+document.body.scrollHeight+"px;");
     (function($) {
         //阻尼系数
         var deceleration = mui.os.ios ? 0.003 : 0.0009;
