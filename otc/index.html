@@ -239,7 +239,7 @@
 			<div id="item3mobile" class="mui-slider-item mui-control-content " style="overflow-y:auto;">
 				<div class="mui-col-sm-12">
 					<div class="fb_text">
-						发布一则交易挂单是免费的，每笔完成的交易需要缴纳1%的费用，钱包中至少有50000TF，挂单才会显示。
+						发布一则交易挂单是免费的，每笔完成的交易需要缴纳3‰的费用，钱包中至少有50000TF，挂单才会显示。
 					</div>
 					<div class="fb_title">
 						选择挂单类型：
@@ -560,8 +560,8 @@
     function changeTab(tab) {
         // document.getElementById(tab).scrollIntoView();
         if("Tab3" == tab){
-            coinPrice("tfchain", function(data){
-                $("#CoinPrice").text(data.tfcoin)
+            coinPrice("TF", function(data){
+                $("#CoinPrice").text(data.TF)
             })
             $("#IndexNavTitle").text("发布挂单");
         }
@@ -576,8 +576,8 @@
                 // $("#UserScore").text(info.score);
 
                 if(info.accountInfo){
-                    $("#UserBalance").text(info.accountInfo.tfcoin_balance);
-                    $("#UserFreeze").text(info.accountInfo.tfcoin_freeze);
+                    $("#UserBalance").text(info.accountInfo.TF_balance);
+                    $("#UserFreeze").text(info.accountInfo.TF_freeze);
                 }
             })
         }

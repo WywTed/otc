@@ -142,6 +142,18 @@
 				</div>
 				<div class="" style="float: left;" id="ToPayAccountArea"></div>
 			</li>
+			<li class="mui-table-view-cell bank-li">
+				<div class="" style="float: left; width: 40%;">
+					银行
+				</div>
+				<div class="" style="float: left;" id="ToBankArea"></div>
+			</li>
+			<li class="mui-table-view-cell bank-li">
+				<div class="" style="float: left; width: 40%;">
+					支行
+				</div>
+				<div class="" style="float: left;" id="ToBranchBankArea"></div>
+			</li>
 		</ul>
 		<ul class="mui-table-view">
 			<li class="mui-table-view-cell">
@@ -161,6 +173,18 @@
 					账号
 				</div>
 				<div class="" style="float: left;" id="FromPayAccountArea"></div>
+			</li>
+			<li class="mui-table-view-cell bank-li">
+				<div class="" style="float: left; width: 40%;">
+					银行
+				</div>
+				<div class="" style="float: left;" id="FromBankArea"></div>
+			</li>
+			<li class="mui-table-view-cell bank-li">
+				<div class="" style="float: left; width: 40%;">
+					支行
+				</div>
+				<div class="" style="float: left;" id="FromBranchBankArea"></div>
 			</li>
 		</ul>
 	</div>
@@ -302,7 +326,7 @@
 
     function ensurePay(){
         var btnArray = ['取消', '确认'];
-        mui.confirm("确认是否已付款", '', btnArray, function(e) {
+        mui.confirm("确认已付款", '', btnArray, function(e) {
             if(e.index == 0) {
                 return;
             }
