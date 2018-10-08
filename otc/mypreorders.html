@@ -197,7 +197,7 @@
         });
         $.ready(function() {
             //循环初始化所有下拉刷新，上拉加载。
-            $("#tfwaiting-scroll").pullToRefresh({
+            $("#tfnormal-scroll").pullToRefresh({
                 down: {
                     callback: function() {
                         console.log("刷新购买单数据")
@@ -249,7 +249,7 @@
                     }
                 }
             })
-            $("#tffinished-scroll").pullToRefresh({
+            $("#tfcanceled-scroll").pullToRefresh({
                 down: {
                     callback: function() {
                         console.log("刷新购买单数据")
