@@ -203,7 +203,7 @@
 	<div class="mui-button-row">
 		<!-- 根据不同的状态显示按钮 -->
 		<div style="display: none;" id="Tips">等待对方确认付款</div>
-		<button type="button" class="mui-btn mui-btn-danger" id="CancelBtn"  style="display: none;">取消订单</button>
+		<button type="button" class="mui-btn mui-btn-danger" id="CancelBtn"  style="display: none;" onclick="cancelTrade()">取消订单</button>
 		<button type="button" class="mui-btn mui-btn-primary" id="ReleaseBtn" style="display: none;" onclick="ensureGet()">确认释放</button>
 	</div>
 </div>
@@ -228,13 +228,9 @@
             $("#Tips").show();
             $("#EnsureStatusDisplayArea").text("待确认付款");
 
-            if(tradeType == "buy"){
+            if(trade.tradeType == "buy"){
                 // 可取消
                 $("#CancelBtn").show();
-                jsAjax.cancelTrade(id, function(data){
-                    mui.toast("取消成功");
-                    location.href = "order_list.html";
-                })
             }
 
         }else if(trade.ensureStatus == "ensure4get") {
@@ -265,6 +261,13 @@
         }
 
     });
+
+    function cancelTrade(){
+        jsAjax.cancelTrade(id, function(data){
+            mui.toast("取消成功");
+            location.href = "order_list.html";
+        })
+	}
 
     function ensureGet(){
         var btnArray = ['取消', '确认'];

@@ -41,7 +41,7 @@
 				<div class="mui-input-row">
 					<label>选择币种</label>
 					<select class="" id="CoinTypeIpt">
-						<option value="tfchain">TF</option>
+						<option value="tfcoin">TF</option>
 					</select>
 				</div>
 				<div class="mui-input-row">
@@ -66,7 +66,7 @@
 					<input type="text" id="CodeIpt" class="mui-input-clear mui-input" placeholder="请输入验证码" style="width: 39%;" />
 				</div>-->
 				<div class="mui-button-row">
-					<button type="button" class="mui-btn mui-btn-primary" onclick="withdraw()">确认提币</button>
+					<button type="button" class="mui-btn mui-btn-primary" onclick="withdraw(this)">确认提币</button>
 				</div>
 			</form>
 		</div>
@@ -76,10 +76,10 @@
 		<script type="text/javascript">
 			mui.init()
 			var downTime = 60;
-			document.querySelector(".yzm_btn").onclick = function() {
+			/*document.querySelector(".yzm_btn").onclick = function() {
 				console.log("获取验证码")
 				setTime();
-			}
+			}*/
 
             /*function sendWithdrawCode() {
                 var mobile = $("#MobileIpt").val();
@@ -126,7 +126,7 @@
 				}, 1000)
 			}
 
-			function withdraw() {
+			function withdraw(target) {
 				var _coinType = $("#CoinTypeIpt").val(); //币种
 				var _ownCoinAddress = $("#OwnAddressIpt").val(); //地址
 				var _amount = $("#AmountIpt").val(); //数量
@@ -156,6 +156,9 @@
 					mui.alert("交易密码由数字与英文字母组成");
 					return;
 				}
+
+				$(target).disabled();
+
 				var data = {};
 				data.coinType = _coinType;
 				data.ownCoinAddress = _ownCoinAddress;
@@ -166,9 +169,9 @@
 					url: "/member/coin/withdraw",
 					type: "post",
 				};
-				// todo validate data
 				jsAjax.ajax(params, function(data) {
-					console.log(data);
+				    mui.toast("提现成功。")
+					mui.back();
 				}, function(XMLHttpRequest) {
 					if(XMLHttpRequest == "relogin") {
 						mui.alert("登陆过期，请重新登陆")
