@@ -186,6 +186,18 @@
 			</div>
 			<div class="" style="float: left;" id="FromPayAccountArea"></div>
 		</li>
+		<li class="mui-table-view-cell bank-li">
+			<div class="" style="float: left; width: 40%;">
+				银行
+			</div>
+			<div class="" style="float: left;" id="FromBankArea"></div>
+		</li>
+		<li class="mui-table-view-cell bank-li">
+			<div class="" style="float: left; width: 40%;">
+				支行
+			</div>
+			<div class="" style="float: left;" id="FromBranchBankArea"></div>
+		</li>
 	</ul>
 
 	<ul class="mui-table-view">
@@ -214,6 +226,7 @@
 <script>
     mui.init();
     var id = jsAjax.getQueryString("id");
+    $(".bank-li").hide();
     jsAjax.getOrder(id ,function(data){
         console.log(data);
         var trade = data.trade;
@@ -236,6 +249,14 @@
         $("#ToPayAccountArea").text(trade.toPayAccount);
         $("#FromPayChannelTypeArea").text(trade.fromPayChannelType);
         $("#ToPayChannelTypeArea").text(trade.toPayChannelType);
+
+        if(trade.fromPayChannelType == "unionpay" && trade.toPayChannelType == "unionpay") {
+            $(".bank-li").show();
+            $("#FromBankArea").text(trade.fromBank);
+            $("#ToBankArea").text(trade.toBank);
+            $("#FromBranchBankArea").text(trade.fromBranchBank);
+            $("#ToBranchBankrea").text(trade.toBranchBank);
+        }
     });
 </script>
 </body>

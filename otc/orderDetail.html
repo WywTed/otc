@@ -240,7 +240,6 @@
     var tradeType = "";
 
     /*(function($){
-
         jsAjax.getPayChannel(function(data){
             if(data.alipay) {
                 $("#AlipayDiv").show();
@@ -252,7 +251,7 @@
             }
         })
     })(mui);*/
-
+    $(".bank-li").hide();
     jsAjax.getOrder(id ,function(data){
         console.log(data);
         var trade = data.trade;
@@ -304,6 +303,14 @@
             $("#ToPayAccountArea").text(trade.toPayAccount);
             $("#FromPayChannelTypeArea").text(trade.fromPayChannelType);
             $("#ToPayChannelTypeArea").text(trade.toPayChannelType);
+
+            if(trade.fromPayChannelType == "unionpay" && trade.toPayChannelType == "unionpay") {
+                $(".bank-li").show();
+                $("#FromBankArea").text(trade.fromBank);
+                $("#ToBankArea").text(trade.toBank);
+                $("#FromBranchBankArea").text(trade.fromBranchBank);
+                $("#ToBranchBankrea").text(trade.toBranchBank);
+            }
         }else{
             $("#SelectArea").show();
             if(data.sellerPayChannels.alipay){
