@@ -626,7 +626,9 @@
             doc.empty();
         }
         doc.append(createPreOrderFragment(data.data, type));
-        scrollPage[type] = data.page
+        if(data.data != null && data.data.length > 0) {
+            scrollPage[type] = data.page
+        }
     }
 
     var createPreOrderFragment = function(preOrder, type) {
@@ -658,8 +660,6 @@
         var params = {};
         params.url = "/trade/pre/list?size=10&type=" + type + "&page=" + page + "&status=normal";
         jsAjax.ajax(params, function(data) {
-            console.log(data)
-            scrollPage[type] = data.page
             if(callback) {
                 callback(data)
             }

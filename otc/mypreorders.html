@@ -101,7 +101,7 @@
 		}
 
 		.mui-segmented-control.mui-scroll-wrapper .mui-control-item {
-			width: 40%;
+			width: 33.33%;
 		}
 		.mui-text-center{
 		}
@@ -123,15 +123,15 @@
 				<a class="mui-control-item" href="#item2mobile">
 					已完成
 				</a>
-				<!--<a class="mui-control-item" href="#item3mobile">
+				<a class="mui-control-item" href="#item3mobile">
 					已取消
-				</a>-->
+				</a>
 			</div>
 		</div>
 		<div class="mui-slider-group">
 			<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
 				<div id="scroll1" class="mui-scroll-wrapper">
-					<div class="mui-scroll" id="tfwaiting-scroll">
+					<div class="mui-scroll" id="tfnormal-scroll">
 						<ul class="mui-table-view" id="pre-normal"></ul>
 					</div>
 				</div>
@@ -143,14 +143,13 @@
 					</div>
 				</div>
 			</div>
-			<!--<div id="item3mobile" class="mui-slider-item mui-control-content">
+			<div id="item3mobile" class="mui-slider-item mui-control-content">
 				<div class="mui-scroll-wrapper">
 					<div class="mui-scroll" id="tfcanceled-scroll">
 						<ul class="mui-table-view" id="pre-canceled"></ul>
 					</div>
 				</div>
-			</div>-->
-
+			</div>
 		</div>
 	</div>
 </div>
@@ -185,6 +184,7 @@
         // 存放上拉的次数，查询数据时需要分页
         normal: 0,
         finished: 0,
+		canceled: 0
     };
     document.querySelector(".mui-content").setAttribute("style","height: "+document.body.scrollHeight+"px;");
     (function($) {
@@ -249,11 +249,40 @@
                     }
                 }
             })
+            $("#tffinished-scroll").pullToRefresh({
+                down: {
+                    callback: function() {
+                        console.log("刷新购买单数据")
+                        var self = this;
+                        setTimeout(function() {
+                            getPreTrade("canceled", 1, function(data){
+                                fill(data, "canceled", true)
+                            });
+                            self.endPullDownToRefresh()
+                        }, 1000);
+                    }
+                },
+                up: {
+                    callback: function() {
+                        console.log("加载更多购买单数据")
+                        var self = this;
+                        setTimeout(function() {
+                            getPreTrade("canceled", scrollPage.canceled + 1, function(data){
+                                fill(data, "canceled")
+                            });
+                            self.endPullUpToRefresh();
+                        }, 1000);
+                    }
+                }
+            })
             getPreTrade("normal", 1, function(data){
                 fill(data, "normal", true)
             })
             getPreTrade("finished", 1, function(data){
                 fill(data, "finished", true)
+            })
+            getPreTrade("canceled", 1, function(data){
+                fill(data, "canceled", true)
             })
         });
         document.querySelector("header").querySelector("a").onclick = function() {
@@ -275,7 +304,9 @@
             doc.empty();
         }
         doc.append(createPreOrderFragment(data.data, status));
-        scrollPage[status] = data.page
+        if(data.data != null && data.data.length > 0) {
+            scrollPage[status] = data.page
+        }
     }
 
     var createPreOrderFragment = function(preOrder, status) {
@@ -303,8 +334,6 @@
         var params = {};
         params.url = "/trade/pre/list?size=10&listType=member&status=" + status + "&page=" + page;
         jsAjax.ajax(params, function(data) {
-            console.log(data)
-            scrollPage[status] = data.page
             if(callback) {
                 callback(data)
             }
