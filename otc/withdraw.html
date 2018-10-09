@@ -38,11 +38,10 @@
 		<div class="huhu-form">
 			<!--class="mui-card"-->
 			<form class="mui-input-group" id="ChgLoginpwdForm">
-
 				<div class="mui-input-row">
 					<label>选择币种</label>
 					<select class="" id="CoinTypeIpt">
-						<option value="tfcoin">TF</option>
+						<option value="TF">TF</option>
 					</select>
 				</div>
 				<div class="mui-input-row">
@@ -158,7 +157,7 @@
 					return;
 				}
 
-				$(target).disabled();
+                $(target).attr("disabled", true);
 
 				var data = {};
 				data.coinType = _coinType;
@@ -174,9 +173,10 @@
 				    mui.toast("提现成功。")
 					mui.back();
 				}, function(XMLHttpRequest) {
+                    $(target).attr("disabled", "");
 					if(XMLHttpRequest == "relogin") {
 						mui.alert("登陆过期，请重新登陆")
-						location.href = "index.html"
+                        location.href = "index.html"
 					} else {
 						mui.alert(XMLHttpRequest.responseJSON.message)
 					}

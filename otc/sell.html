@@ -273,7 +273,7 @@
 
     jsAjax.getPrices(function(data){
         prices = data;
-        $(".coinprice").text(prices.usdt);
+        $(".coinprice").text(prices.USDT);
     }, function (error) {
         mui.alert(error.responseJSON.message)
     })
@@ -332,7 +332,7 @@
 
         $(".coinamount").text(jsAjax.numFormat(jsAjax.numDiv(
             jsAjax.numMulti(ele.value, info.preTrade.ideaUnivalent),
-            prices.usdt),
+            prices.USDT),
             4));
     }
 
