@@ -442,74 +442,92 @@
     document.querySelector(".mui-content").setAttribute("style","height: "+document.body.scrollHeight+"px;");
     (function($) {
 
-        // todo 检查用户是否登录
-        if(!sessionStorage.getItem("login")){
-            location.href = "login.html";
-        }
+				// todo 检查用户是否登录
+				if(!sessionStorage.getItem("login")) {
+					location.href = "login.html";
+				}
+				var _page_return = localStorage.getItem("PAGE_RETURN");
+				if(_page_return) {
+					console.log(_page_return); //1:出售列表返回  2：“我的”列表中跳转页面点击返回
+					var _elements = document.querySelectorAll(".mui-tab-item");
+					var _elements2 = document.querySelectorAll(".mui-slider-item");
+					_elements[0].classList.remove("mui-active");
+					_elements2[0].classList.remove("mui-active");
+					if(_page_return == 1) {
+						_elements[1].classList.add("mui-active");
+						_elements2[1].classList.add("mui-active");
+					   document.getElementById("IndexNavTitle").innerHTML = "出售列表";
+					} else if(_page_return == 2) {
+						_elements[3].classList.add("mui-active");
+						_elements2[3].classList.add("mui-active");
+						document.getElementById("IndexNavTitle").innerHTML = "个人中心";	
 
-        //阻尼系数
-        var deceleration = mui.os.ios ? 0.003 : 0.0009;
-        $('.mui-scroll-wrapper').scroll({
-            bounce: false,
-            indicators: true, //是否显示滚动条
-            deceleration: deceleration
-        });
-        $.ready(function() {
-            mui('.mui-slider').slider().stopped = true; //禁止页面左右滑动
-            $("#tfbuy-scroll").pullToRefresh({
-                down: {
-                    callback: function() {
-                        console.log("刷新购买单数据")
-                        var self = this;
-                        setTimeout(function() {
-                            getPreTrade("sell", 1, function(data){
-                                fill(data, "sell", true)
-                            });
-                            self.endPullDownToRefresh()
-                        }, 1000);
-                    }
-                },
-                up: {
-                    callback: function() {
-                        console.log("加载更多购买单数据")
-                        var self = this;
-                        setTimeout(function() {
-                            getPreTrade("sell", scrollPage.sell + 1, function(data){
-                                fill(data, "sell")
-                            });
-                            self.endPullUpToRefresh();
-                        }, 1000);
-                    }
-                }
-            })
-            $("#tfsell-scroll").pullToRefresh({
-                down: {
-                    callback: function() {
-                        console.log("刷新出售单数据")
-                        var self = this;
-                        setTimeout(function() {
-                            getPreTrade("buy", 1, function(data){
-                                fill(data, "buy", true)
-                            });
-                            self.endPullDownToRefresh()
-                        }, 1000);
-                    }
-                },
-                up: {
-                    callback: function() {
-                        console.log("加载更多出售单数据")
-                        var self = this;
-                        setTimeout(function() {
-                            getPreTrade("buy", scrollPage.sell + 1, function(data){
-                                fill(data, "buy")
-                            });
-                            self.endPullUpToRefresh();
-                        }, 1000);
-                    }
-                }
-            })
-            init();
-        });
+					}
+					localStorage.removeItem("PAGE_RETURN");
+				}
+				//阻尼系数
+				var deceleration = mui.os.ios ? 0.003 : 0.0009;
+				$('.mui-scroll-wrapper').scroll({
+					bounce: false,
+					indicators: true, //是否显示滚动条
+					deceleration: deceleration
+				});
+				$.ready(function() {
+					mui('.mui-slider').slider().stopped = true; //禁止页面左右滑动
+					$("#tfbuy-scroll").pullToRefresh({
+						down: {
+							callback: function() {
+								console.log("刷新购买单数据")
+								var self = this;
+								setTimeout(function() {
+									getPreTrade("sell", 1, function(data) {
+										fill(data, "sell", true)
+									});
+									self.endPullDownToRefresh()
+								}, 1000);
+							}
+						},
+						up: {
+							callback: function() {
+								console.log("加载更多购买单数据")
+								var self = this;
+								setTimeout(function() {
+									getPreTrade("sell", scrollPage.sell + 1, function(data) {
+										fill(data, "sell")
+									});
+									self.endPullUpToRefresh();
+								}, 1000);
+							}
+						}
+					})
+					$("#tfsell-scroll").pullToRefresh({
+						down: {
+							callback: function() {
+								console.log("刷新出售单数据")
+								var self = this;
+								setTimeout(function() {
+									getPreTrade("buy", 1, function(data) {
+										fill(data, "buy", true)
+									});
+									self.endPullDownToRefresh()
+								}, 1000);
+							}
+						},
+						up: {
+							callback: function() {
+								console.log("加载更多出售单数据")
+								var self = this;
+								setTimeout(function() {
+									getPreTrade("buy", scrollPage.sell + 1, function(data) {
+										fill(data, "buy")
+									});
+									self.endPullUpToRefresh();
+								}, 1000);
+							}
+						}
+					})
+					init();
+				});
 
         mui("#item1mobile").on("tap", ".list_btn", function(event) {
             console.log(event)
@@ -569,7 +587,6 @@
         if("Tab4" == tab){
             $("#IndexNavTitle").text("个人中心");
             getUserInfo(function(info){
-                console.log(info)
                 $("#UserName").text(info.name);
                 $("#UserMobile").text(info.mobile);
                 $("#UserTradeCount").text(info.tradeCount);
@@ -636,13 +653,18 @@
         var li;
         $.each(preOrder, function(index, value) {
             li = document.createElement('li');
-            li.className = 'mui-table-view-cell ' + value.memberFlag;
+            // li.className = 'mui-table-view-cell ' + value.memberFlag;
+            li.className = 'mui-table-view-cell ';
+
             if(value.preTrade.coinType == "TF"){
                 value.preTrade.coinType = "TF";
             }
             var paychannel = "支付宝";
-            if(value.preTrade.payChannel && value.preTrade.payChannel != null){
+            if(value.memberFlag && value.memberFlag =="inmoney"){
                 paychannel = "银行卡"
+            }
+            if(value.memberFlag && value.memberFlag =="platform"){
+                paychannel = "银行卡、支付宝"
             }
             var str = template('tpl-' + type, {
                 item: value.preTrade,

@@ -74,6 +74,10 @@
 				console.log("获取验证码")
 				setTime();
 			}
+			//页面左上角返回时转到相应页面
+			document.querySelector("header").querySelector("a").onclick = function() {
+				localStorage.setItem("PAGE_RETURN", 2)
+			}
 
 			function setTime() {
 				setTimeout(function() {

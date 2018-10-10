@@ -216,7 +216,7 @@
 	<%
 	<div class="mui-to-page" > <!--data-id="<%=item.id%>" data-status="<%=item.status%>" data-type="<%=item.tradeType%>"-->
 	<div class="list_content1"> <!-- onclick="detailTrade(<%=item.id%>, <%=item.status%>, <%=item.tradeType%>)-->
-		<div class="cont_type cont_type_<%=item.tradeType%>">
+		<div class="cont_type cont_type_<%=tradeType2member%>">
 			<%=type%>
 		</div>
 		<div class="cont_tile">
@@ -256,78 +256,118 @@
 <script>
     mui.init();
 
-    var scrollPage = {
-        waiting: 1,
-        finished: 1,
-		canceled: 1
-    };
-    document.querySelector(".mui-content").setAttribute("style","height: "+document.body.scrollHeight+"px;");
-    (function($) {
-        //阻尼系数
-        var deceleration = mui.os.ios ? 0.003 : 0.0009;
-        $('.mui-scroll-wrapper').scroll({
-            bounce: false,
-            indicators: true, //是否显示滚动条
-            deceleration: deceleration
-        });
-        $.ready(function() {
-            //循环初始化所有下拉刷新，上拉加载。
-            $.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
-                $(pullRefreshEl).pullToRefresh({
-                    down: {
-                        callback: function() {
-                            console.log("刷新订单数据")
-                            var self = this;
-                            setTimeout(function() {
-                                self.endPullDownToRefresh()
-                                var type;
-                                switch(index){
-                                    case 0: type = "waiting";break;
-                                    case 1: type = "finished";break;
-									case 2: type = "canceled";break;
-                                    default: return;
-                                }
-                                getOrder(type, 1, function(data){
-                                    fill(data, type, true)
-                                });
-                            }, 1000);
-                        }
-                    },
-                    up: {
-                        callback: function() {
-                            console.log("加载更多购买单数据")
-                            var self = this;
-                            setTimeout(function() {
-                                self.endPullUpToRefresh();
-                                var type;
-                                switch(index){
-                                    case 0: type = "waiting";break;
-                                    case 1: type = "finished";break;
-                                    case 2: type = "canceled";break;
-                                    default: return;
-                                }
-                                getOrder(type, scrollPage[type] + 1, function(data){
-                                    fill(data, type)
-                                })
-                            }, 1000);
-                        }
-                    }
-                });
-            });
-            getOrder("waiting", scrollPage.waiting, function(data){
-                fill(data, "waiting", true)
-            })
-            getOrder("finished", scrollPage.finished, function(data){
-                fill(data, "finished", true)
-            })
-            getOrder("canceled", scrollPage.canceled, function(data){
-                fill(data, "canceled", true)
-            })
-			//
-            mui(".mui-slider-group").on("tap", ".mui-table-view-cell", function() {
-                console.log(this)
-                detailTrade(this.dataTid, this.dataStatus, this.dataType);
-            });
+			var scrollPage = {
+				waiting: 1,
+				finished: 1,
+				canceled: 1
+			};
+			document.querySelector(".mui-content").setAttribute("style", "height: " + document.body.scrollHeight + "px;");
+			(function($) {
+				//页面左上角返回时转到相应页面
+				document.querySelector("header").querySelector("a").onclick = function() {
+					localStorage.setItem("PAGE_RETURN", 2)
+				}
+				
+				
+				
+				var _page_return_order = localStorage.getItem("PAGE_RETURN_ORDER");
+				if(_page_return_order) {
+					console.log(_page_return_order); //订单管理往订单详情跳转时 页面状态下标
+					var _elements = document.querySelectorAll(".mui-control-item");
+					var _elements2 = document.querySelectorAll(".mui-slider-item");
+					_elements[0].classList.remove("mui-active");
+					_elements2[0].classList.remove("mui-active");
+					_elements[_page_return_order].classList.add("mui-active");
+					_elements2[_page_return_order].classList.add("mui-active");
+					localStorage.removeItem("PAGE_RETURN_ORDER");
+				}
+
+				//阻尼系数
+				var deceleration = mui.os.ios ? 0.003 : 0.0009;
+				$('.mui-scroll-wrapper').scroll({
+					bounce: false,
+					indicators: true, //是否显示滚动条
+					deceleration: deceleration
+				});
+				$.ready(function() {
+					//循环初始化所有下拉刷新，上拉加载。
+					$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+						$(pullRefreshEl).pullToRefresh({
+							down: {
+								callback: function() {
+									console.log("刷新订单数据")
+									var self = this;
+									setTimeout(function() {
+										self.endPullDownToRefresh()
+										var type;
+										switch(index) {
+											case 0:
+												type = "waiting";
+												break;
+											case 1:
+												type = "finished";
+												break;
+											case 2:
+												type = "canceled";
+												break;
+											default:
+												return;
+										}
+										getOrder(type, 1, function(data) {
+											fill(data, type, true)
+										});
+									}, 1000);
+								}
+							},
+							up: {
+								callback: function() {
+									console.log("加载更多购买单数据")
+									var self = this;
+									setTimeout(function() {
+										self.endPullUpToRefresh();
+										var type;
+										switch(index) {
+											case 0:
+												type = "waiting";
+												break;
+											case 1:
+												type = "finished";
+												break;
+											case 2:
+												type = "canceled";
+												break;
+											default:
+												return;
+										}
+										getOrder(type, scrollPage[type] + 1, function(data) {
+											fill(data, type)
+										})
+									}, 1000);
+								}
+							}
+						});
+					});
+					getOrder("waiting", scrollPage.waiting, function(data) {
+						fill(data, "waiting", true)
+					})
+					getOrder("finished", scrollPage.finished, function(data) {
+						fill(data, "finished", true)
+					})
+					getOrder("canceled", scrollPage.canceled, function(data) {
+						fill(data, "canceled", true)
+					})
+					//
+					mui(".mui-slider-group").on("tap", ".mui-table-view-cell", function() {
+						console.log(this)
+						var _elements = document.querySelectorAll(".mui-control-item");
+						for(var i = 0; i < _elements.length; i++) {
+							var _classStr = _elements[i].classList;
+								if(_classStr.toString().indexOf("mui-active") != -1) {
+								localStorage.setItem("PAGE_RETURN_ORDER", i);
+							}
+						}
+						detailTrade(this.dataTid, this.dataStatus, this.dataType);
+					});
 
         });
     })(mui);
@@ -361,7 +401,8 @@
             }
             var str = template('tpl-order', {
                 item: value.trade,
-				type: value.tradeTypeDisplay
+				type: value.tradeTypeDisplay,
+                tradeType2member: value.tradeType2member
             })
             li.innerHTML = str;
             fragment.appendChild(li);

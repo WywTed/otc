@@ -208,8 +208,6 @@
     jsAjax.getOrder(id ,function(data){
         console.log(data);
         var trade = data.trade;
-        var buyer = data.buyer;
-        var seller = data.seller;
         $("#TradeIdArea").text(trade.id)
         $("#SellerNameArea").text(trade.sellerName);
         $("#MoneyArea").text(trade.money);

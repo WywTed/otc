@@ -74,13 +74,17 @@
 	%>
 </script>
 
-<script type="text/javascript">
-    mui.init();
-    (function($){
-        getCoinAddress(function(){
+		<script type="text/javascript">
+			mui.init();
+			(function($) {
+				//页面左上角返回时转到相应页面
+				document.querySelector("header").querySelector("a").onclick = function() {
+					localStorage.setItem("PAGE_RETURN", 2)
+				}
+				getCoinAddress(function() {
 
-        })
-    })(mui)
+				})
+			})(mui)
 
 	function ensureCharge(){
 		var params = {

@@ -1,15 +1,23 @@
 <!doctype html>
 <html>
 
-<head>
-	<meta charset="UTF-8">
-	<title>支付宝信息设置</title>
-	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-	<meta http-equiv="cache-control" content="no-cache">
-	<link href="css/mui.min.css" rel="stylesheet" />
-	<link href="css/base.css" rel="stylesheet" />
-
-</head>
+	<head>
+		<meta charset="UTF-8">
+		<title>支付宝信息设置</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta http-equiv="cache-control" content="no-cache">
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/base.css" rel="stylesheet" />
+		<style type="text/css">
+			.sm {
+				color: #FFFFFF;
+				font-size: 20px;
+				background-color: rgb(255, 158, 165);
+				padding: 15px;
+				margin: 10px 0 50px;
+			}
+		</style>
+	</head>
 
 <style type="text/css">
 .mui-card, .huhu-form{
@@ -24,57 +32,66 @@
 	<h1 class="mui-title">绑定用户支付宝信息</h1>
 </header>
 
-<div class="huhu-form"><!--class="mui-card"-->
-	<form class="mui-input-group" id="ChgLoginpwdForm">
-		<div class="mui-input-row">
-			<label>昵称</label>
-			<input type="text" class="mui-input-clear" placeholder="请输入昵称" id="NameIpt">
+		<div class="huhu-form">
+			<!--class="mui-card"-->
+			<form class="mui-input-group" id="ChgLoginpwdForm">
+				<div class="mui-input-row">
+					<label>昵称</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入昵称" id="NameIpt">
+				</div>
+				<div class="mui-input-row">
+					<label>真实姓名</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入真实姓名" id="RealNameIpt">
+				</div>
+				<div class="mui-input-row">
+					<label>支付宝账号</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入支付宝账号" id="AlipayIpt">
+				</div>
+				<div class="mui-button-row">
+					<button type="button" class="mui-btn mui-btn-primary" onclick="changeInfo()">绑定</button>
+					<button type="reset" class="mui-btn mui-btn-danger">重置</button>
+				</div>
+				<div class="sm">
+					请填写真实的姓名以及支付宝信息，如果填写错误，导致收不到款，CoinSky不负有任何责任！
+				</div>
+			</form>
 		</div>
-		<div class="mui-input-row">
-			<label>真实姓名</label>
-			<input type="text" class="mui-input-clear" placeholder="请输入真实姓名" id="RealNameIpt">
-		</div>
-		<div class="mui-input-row">
-			<label>支付宝账号</label>
-			<input type="text" class="mui-input-clear" placeholder="请输入支付宝账号" id="AlipayIpt">
-		</div>
-		<div class="mui-button-row">
-			<button type="button" class="mui-btn mui-btn-primary" onclick="changeInfo()">绑定</button>
-			<button type="reset" class="mui-btn mui-btn-danger" >重置</button>
-		</div>
-	</form>
-</div>
 
-<script src="js/mui.min.js"></script>
-<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
-<script src="js/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript">
-    mui.init()
-	function changeInfo(){
-        // todo 修改密码需要手机号验证码验证
-        var data = {};
-        data.name = $("#NameIpt").val();
-        data.alipayAddress = $("#AlipayIpt").val();
-        data.realName = $("#RealNameIpt").val();
-        var params = {
-            data: data,
-            url: "/member/change/info",  // todo
-            type: "post",
-        };
-        // todo validate data
-        jsAjax.ajax(params, function(data) {
-            console.log("##### 修改用户信息完成 ####")
-			mui.back();
-        }, function(XMLHttpRequest) {
-            if(XMLHttpRequest == "relogin") {
-                mui.alert("登陆过期，请重新登陆")
-                location.href = "index.html"
-            } else {
-                mui.alert(XMLHttpRequest.responseJSON.message)
-            }
-        });
-	}
-</script>
-</body>
+		<script src="js/mui.min.js"></script>
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init()
+			//页面左上角返回时转到相应页面
+			document.querySelector("header").querySelector("a").onclick = function() {
+				localStorage.setItem("PAGE_RETURN", 2)
+			}
+
+			function changeInfo() {
+				// todo 修改密码需要手机号验证码验证
+				var data = {};
+				data.name = $("#NameIpt").val();
+				data.alipayAddress = $("#AlipayIpt").val();
+				data.realName = $("#RealNameIpt").val();
+				var params = {
+					data: data,
+					url: "/member/change/info", // todo
+					type: "post",
+				};
+				// todo validate data
+				jsAjax.ajax(params, function(data) {
+					console.log("##### 修改用户信息完成 ####")
+					mui.back();
+				}, function(XMLHttpRequest) {
+					if(XMLHttpRequest == "relogin") {
+						mui.alert("登陆过期，请重新登陆")
+						location.href = "index.html"
+					} else {
+						mui.alert(XMLHttpRequest.responseJSON.message)
+					}
+				});
+			}
+		</script>
+	</body>
 
 </html>

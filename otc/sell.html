@@ -303,6 +303,10 @@
             }
         })
     }*/
+   //页面左上角返回时转到相应页面
+    document.querySelector("header").querySelector("a").onclick = function() {
+        localStorage.setItem("PAGE_RETURN",1)
+    }
     document.querySelector(".sell_btn").onclick = function() {
         var data = {
             univalent: info.preTrade.ideaUnivalent,
