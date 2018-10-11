@@ -158,37 +158,37 @@
             text: coinAddress
         });
     }
-//  function copyAddress(id){
-//      const input = document.createElement('input');
-//      document.body.appendChild(input);
-//      input.setAttribute("type","text");
-//      input.setAttribute('value', $("#" + id).text().trim());
-//      input.select();
-//      if (document.execCommand('copy')) {
-//          document.execCommand('copy');
-//         mui.alert('复制成功');
-//      }
-//      document.body.removeChild(input);
-//	}
+ function copyAddress(id){
+     const input = document.createElement('input');
+     document.body.appendChild(input);
+     input.setAttribute("type","text");
+     input.setAttribute('value', $("#" + id).text().trim());
+     input.select();
+     if (document.execCommand('copy')) {
+         document.execCommand('copy');
+        mui.alert('复制成功');
+     }
+     document.body.removeChild(input);
+	}
     
-    function copyAddress(id) {
-				var oInput = document.createElement('input');
-				oInput.value = $("#" + id).text().trim();
-				var u = navigator.userAgent;
-				var ua = window.navigator.userAgent.toLowerCase();
-				var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-				if(isiOS) {
-					oInput.disabled = "disabled";
-				}
-				//oInput.disabled = "disabled";
-				document.body.appendChild(oInput);
-				oInput.select(); // 选择对象
-				oInput.setSelectionRange(0, oInput.value.length);
-				document.execCommand("Copy"); // 执行浏览器复制命令
-				oInput.className = 'oInput';
-				oInput.style.display = 'none';
-				mui.alert('复制成功');
-			}
+    // function copyAddress(id) {
+		// 		var oInput = document.createElement('input');
+		// 		oInput.value = $("#" + id).text().trim();
+		// 		var u = navigator.userAgent;
+		// 		var ua = window.navigator.userAgent.toLowerCase();
+		// 		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		// 		if(isiOS) {
+		// 			oInput.disabled = "disabled";
+		// 		}
+		// 		//oInput.disabled = "disabled";
+		// 		document.body.appendChild(oInput);
+		// 		oInput.select(); // 选择对象
+		// 		oInput.setSelectionRange(0, oInput.value.length);
+		// 		document.execCommand("Copy"); // 执行浏览器复制命令
+		// 		oInput.className = 'oInput';
+		// 		oInput.style.display = 'none';
+		// 		mui.alert('复制成功');
+		// 	}
 </script>
 </body>
 
