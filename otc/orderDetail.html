@@ -45,6 +45,12 @@
 		.fb_title{
 			margin: 10px;
 		}
+		.mui-input-row{
+			height: auto!important;
+		}
+		.mui-input-row p{
+			padding: 0 15px;
+		}
 	</style>
 </head>
 
@@ -195,13 +201,14 @@
 		</div>
 		<div class="mui-card">
 			<form class="mui-input-group ">
-				<div class="mui-input-row mui-radio" style="display: none" id="AlipayDiv">
-					<label>支付宝  <span id="AlipayArea"></span> </label>
+				<div class="mui-input-row mui-radio " style="display: none" id="AlipayDiv">
+					<label>支付宝   <span id="AlipayRealNameArea"></span> / <span id="AlipayArea"></span> </label>
 					<input name="payType" value="alipay" type="radio" checked/>
 				</div>
 				<div class="mui-input-row mui-radio"  style="display: none" id="UnionpayDiv">
-					<label>银行卡  <span id="UnionpayArea"></span> </label>
+					<label>银行卡   <span id="UnionpayRealNameArea"></span> / <span id="UnionpayArea"></span> </label>
 					<input name="payType" value="unionpay" type="radio"/>
+					<p> <span id="BankNameArea"></span> / <span id="BranchBankNameArea"></span> </p>
 				</div>
 			</form>
 		</div>
@@ -320,10 +327,15 @@
             if(data.sellerPayChannels.alipay){
                 $("#AlipayDiv").show();
                 $("#AlipayArea").text(data.sellerPayChannels.alipay.payAccount);
+                $("#AlipayRealNameArea").text(data.sellerPayChannels.alipay.realName);
 			}
 			if(data.sellerPayChannels.unionpay) {
                 $("#UnionpayDiv").show();
                 $("#UnionpayArea").text(data.sellerPayChannels.unionpay.payAccount)
+                $("#UnionpayRealNameArea").text(data.sellerPayChannels.unionpay.realName)
+                $("#BankNameArea").text(data.sellerPayChannels.unionpay.bank)
+                $("#BranchBankNameArea").text(data.sellerPayChannels.unionpay.branchBank)
+
             }
 		}
     });
