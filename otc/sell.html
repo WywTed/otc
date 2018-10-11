@@ -313,9 +313,15 @@
             amount: $("#GdAmount").val(),
             money: $("#GdMoney").val()
         };
-        if(data.amount == "" || data.amount == null || parseFloat(data.amount) > parseFloat(info.preTrade.maxAmount) || parseFloat(data.amount < info.preTrade.minAmount)) {
-            mui.alert("请输入正确的数量，不能超出限额");
+        if(data.amount == "" || data.amount == null){
+            mui.alert("请输入数量");
             return;
+        }
+        if(parseFloat(data.amount) != info.preTrade.restAmount){
+            if(parseFloat(data.amount) > parseFloat(info.preTrade.maxAmount) || parseFloat(data.amount < info.preTrade.minAmount)) {
+                mui.alert("请输入正确的数量，不能超出限额");
+                return;
+            }
         }
         var _html = template('tips',{
             item: data

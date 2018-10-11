@@ -252,6 +252,9 @@
             }
         })
     })(mui);*/
+
+    var showPayChannel = false;
+
     $(".bank-li").hide();
     jsAjax.getOrder(id ,function(data){
         console.log(data);
@@ -313,6 +316,7 @@
             }
         }else{
             $("#SelectArea").show();
+            showPayChannel = true;
             if(data.sellerPayChannels.alipay){
                 $("#AlipayDiv").show();
                 $("#AlipayArea").text(data.sellerPayChannels.alipay.payAccount);
@@ -337,9 +341,15 @@
             if(e.index == 0) {
                 return;
             }
+            var url =  "/trade/order/ensure4pay/" + id;
+            if(showPayChannel){
+                var payChannelType = $("input[name=payType]:checked").val();
+                url = url+ "?payChannelType=" + payChannelType;
+            }
+
             var params = {
                 type: "post",
-                url: "/trade/order/ensure4pay/" + id,
+                url:  url
 
             };
             jsAjax.ajax(params, function(data){

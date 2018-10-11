@@ -91,7 +91,7 @@
 		    url: "/member/coin/charge?coinType=TF",
 		}
 		jsAjax.ajax(params, function(data){
-            mui.toast("正在查询。");
+            mui.toast("查询完毕。");
 		}, function(error){
 		    mui.toast(error.responseJSON.message)
 		})
