@@ -154,17 +154,6 @@ var jsAjax = new function() {
         this.ajax(param, successCallback, errorCallback);
     };
 
-    this.getMember = function(id, successCallback, errorCallback){
-        if(id == null || id == undefined) {
-            mui.alert("未找到用户")
-            return;
-        }
-        var param = {
-            url: "/member/"+ id
-        }
-        this.ajax(param, successCallback, errorCallback);
-    }
-
     /**
      *
      * @param id

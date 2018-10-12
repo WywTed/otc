@@ -119,7 +119,8 @@
 					mui.alert("验证码发送成功");
                     setTime();
                 }, function(XMLHttpRequest) {
-					if(XMLHttpRequest == "relogin") {
+                    document.querySelector(".yzm_btn").disabled = "";
+                    if(XMLHttpRequest == "relogin") {
 						mui.alert("登陆过期，请重新登陆")
 						location.href = "index.html"
 					} else {
