@@ -242,7 +242,7 @@
 			<div id="item3mobile" class="mui-slider-item mui-control-content " style="overflow-y:auto;">
 				<div class="mui-col-sm-12">
 					<div class="fb_text">
-						发布一则交易挂单是免费的，每笔完成的交易需要缴纳3‰的费用，钱包中至少有50000TF，挂单才会显示。
+						发布一则交易挂单是免费的，每笔完成的交易需要缴纳3‰的费用 <!--，钱包中至少有50000TF，挂单才会显示。-->
 					</div>
 					<div class="fb_title">
 						选择挂单类型：
@@ -250,17 +250,17 @@
 					<div class="mui-card">
 						<form class="mui-input-group ">
 							<div class="mui-input-row mui-radio">
-								<label>在线出售TF</label>
+								<label>在线出售USDT</label>
 								<input name="tradeType" value="sell" type="radio" checked onchange="changePreOrderType(this)" />
 							</div>
-							<div class="mui-input-row mui-radio">
+							<!--<div class="mui-input-row mui-radio">
 								<label>在线购买TF</label>
 								<input name="tradeType" value="buy" type="radio" onchange="changePreOrderType(this)" />
-							</div>
+							</div>-->
 						</form>
 					</div>
-					<!--<div class="fb_title">
-                        选择支付或收款账号：
+					<div class="fb_title">
+                        选择收款账号：
                     </div>
                     <div class="mui-card">
                         <form class="mui-input-group ">
@@ -273,7 +273,7 @@
                                 <input name="payType" value="unionpay" type="radio"/>
                             </div>
                         </form>
-                    </div>-->
+                    </div>
 					<div class="mui-card">
 						<div class="mui-card-content">
 							<div class="mui-card-content-inner">
@@ -414,6 +414,23 @@
 	</div>
 	%>
 </script>
+<!--<script type="text/template" id="tpl-buy">
+	<%
+	<div class="mui-table ">
+		<div class="mui-table-cell mui-col-xs-10">
+			<h4 class="mui-ellipsis"><%=item.showId%> | <%=name%></h4>
+			<span class="mui-badge mui-badge-success" id="BuyPayChannelArea"><%=paychannel%></span>
+			<div class="mui-clearfix"></div>
+			<h5>交易次数**|成交率**</h5>
+			<p class="mui-h6 mui-ellipsis">限额数量 <%=item.minAmount%> - <%=item.maxAmount%></p>
+		</div>
+		<div class="mui-table-cell mui-col-xs-2 mui-text-right">
+			<span class="mui-h5"><%=item.ideaUnivalent%> CNY</span>
+			<button class="list_btn" name="<%=item.id%>" onclick="toSellpage(<%=item.id%>)">出售<%=item.coinType%></button>
+		</div>
+	</div>
+	%>
+</script>-->
 <script type="text/template" id="tpl-sell">
 	<%
 	<div class="mui-table ">
@@ -584,7 +601,7 @@
     function changeTab(tab) {
         // document.getElementById(tab).scrollIntoView();
         if("Tab3" == tab){
-            coinPrice("TF", function(data){
+            coinPrice("USDT", function(data){
                 $("#CoinPrice").text(data.TF)
             })
             $("#IndexNavTitle").text("发布挂单");
@@ -801,7 +818,7 @@
             return;
         }
         var params = {};
-        params.url = "/coin/market/price?coinType=TF";
+        params.url = "/coin/market/price?coinType=" + type;
         jsAjax.ajax(params, function(data) {
             if(callback) {
                 callback(data)
