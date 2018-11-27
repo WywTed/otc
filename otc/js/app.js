@@ -1,4 +1,4 @@
- var HOST = "http://localhost:8081/api/v1"
+ var HOST = "http://localhost:8083/api/v1"
 // var HOST = "http://www.huhusky.com/otcapis/api/v1"
 // var HOST = "http://huhusky.vipgz1.idcfengye.com/8081/api/v1"
 // window.addEventListener('touchmove', function defaultf(){}, { passive: false })
