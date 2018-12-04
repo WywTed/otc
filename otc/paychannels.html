@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>支付信息列表</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="cache-control" content="no-cache">
+    <link href="css/mui.min.css" rel="stylesheet" />
+    <style type="text/css">
+        .channels{
+            margin-top: 50px;
+        }
+        .channels li {
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">支付信息列表</h1>
+</header>
+
+<div class="channels">
+
+</div>
+
+<script src="js/mui.min.js"></script>
+<script src="js/mui.pullToRefresh.js"></script>
+<script src="js/mui.pullToRefresh.material.js"></script>
+<script src="js/arttmpl.js"></script>
+<script src="js/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/template" id="tpl-paychannel">
+    <%
+    <div class="mui-table" oncliick="">
+        <div class="mui-table-cell mui-col-xs-10">
+            <p><%=item.payChannel%> | <%=item.realName%> </p>
+            <p>账号： <%=item.payAccount%></p>
+        </div>
+    </div>
+    %>
+</script>
+<script type="text/javascript">
+    mui.init();
+
+    (function($) {
+        //页面左上角返回时转到相应页面
+        document.querySelector("header").querySelector("a").onclick = function() {
+            localStorage.setItem("PAGE_RETURN", 2)
+        }
+        init();
+    })(mui);
+    function init() {
+        var params = {
+            url: "/payment/channel",
+        }
+        jsAjax.ajax(params, function(data) {
+            if(data == null || data == undefined) {
+                return;
+            }
+            console.log(data)
+            fill(data)
+        })
+    }
+
+    function fill(data) {
+        var doc = $(".channels");
+        doc.append(createPayChannelFragment(data));
+    }
+
+    var createPayChannelFragment = function(payChannels) {
+        var fragment = document.createDocumentFragment();
+        var li;
+        $.each(payChannels, function(index, value) {
+            li = document.createElement('li');
+            li.className = 'mui-table-view-cell ';
+            var paychannel = value.channelType;
+            if(paychannel == "unionpay"){
+                paychannel = "银行卡"
+            }
+            if(paychannel == "alipay"){
+                paychannel = "支付宝"
+            }
+            var str = template('tpl-paychannel', {
+                item: {
+                    realName: value.realName,
+                    payChannel: paychannel,
+                    payAccount: value.payAccount
+                },
+            })
+            li.innerHTML = str;
+            fragment.appendChild(li);
+        });
+        return fragment;
+    }
+
+</script>
+</body>
+</html>
