@@ -41,12 +41,16 @@
 				<div class="mui-input-row">
 					<label>选择币种</label>
 					<select class="" id="CoinTypeIpt">
-						<option value="TF">TF</option>
+						<option value="USDT">USDT</option>
 					</select>
 				</div>
 				<div class="mui-input-row">
 					<label>地址</label>
 					<input type="text" class="" placeholder="请输入地址" id="OwnAddressIpt" />
+				</div>
+				<div class="mui-input-row">
+					<label>确认地址</label>
+					<input type="text" class="" placeholder="请输入地址" id="OwnAddressReIpt" />
 				</div>
 				<div class="mui-input-row">
 					<label>数量</label>
@@ -133,6 +137,7 @@
 			function withdraw(target) {
 				var _coinType = $("#CoinTypeIpt").val(); //币种
 				var _ownCoinAddress = $("#OwnAddressIpt").val(); //地址
+                var _ownCoinAddressRe = $("#OwnAddressReIpt").val(); //地址
 				var _amount = $("#AmountIpt").val(); //数量
 				var _tradePassword = $("#TradepwdIpt").val(); //交易密码				
 
@@ -144,6 +149,14 @@
 					mui.alert("请输入提币地址");
 					return;
 				}
+				if(!_ownCoinAddressRe) {
+                    mui.alert("请确认提币地址");
+                    return;
+                }
+                if(_ownCoinAddress != _ownCoinAddressRe) {
+                    mui.alert("提币地址不统一");
+                    return;
+                }
 				if(!_amount) {
 					mui.alert("请输入提币数量");
 					return;

@@ -98,10 +98,6 @@
 	}
 
     function getCoinAddress(){
-        /*var data = [
-            {coinType: "tfchain", coinAddress: "http://www.baidu.com"},
-            {coinType: "usdt", coinAddress: "http://www.baidu.com"},
-        ]*/
         var params = {
             url: "/member/coin/address" // 用戶不同币种的地址
         };
@@ -123,26 +119,25 @@
 		for ( var key in data) {
             createUserQRCodeImage(data[key], key+"Img");
         }
-       /* $.each(data, function(index, value){
-            createUserQRCodeImage(value.coinAddress, value.coinType+"Img");
-        });*/
     }
 
     function createCoinAddressShowFragment(data){
         var fragment = document.createDocumentFragment();
         var li;
         for ( var key in data) {
-            var value = {
-                coinType: key,
-				coinAddress: data[key]
+            if(key == "USDT"){
+                var value = {
+                    coinType: key,
+                    coinAddress: data[key]
+                }
+                li = document.createElement('li');
+                li.className = 'mui-table-view-cell mui-collapse';
+                var str = template('tpl-coinaddress', {
+                    item: value
+                })
+                li.innerHTML = str;
+                fragment.appendChild(li);
 			}
-            li = document.createElement('li');
-            li.className = 'mui-table-view-cell mui-collapse';
-            var str = template('tpl-coinaddress', {
-                item: value
-            })
-            li.innerHTML = str;
-            fragment.appendChild(li);
         };
         return fragment;
     }

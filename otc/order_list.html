@@ -436,6 +436,12 @@
         trade.createTimeDisplay = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
         if(trade.status == "waiting"){
             trade.statusDisplay = "进行中";
+            if(trade.ensureStatus == "none"){
+                trade.statusDisplay = "待支付";
+			}
+            if(trade.ensureStatus == "ensure4pay"){
+                trade.statusDisplay = "待收款";
+            }
 		}
 		if(trade.status == "finished"){
             trade.statusDisplay = "已完成";

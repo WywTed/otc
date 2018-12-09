@@ -206,25 +206,6 @@
 		</ul>
 	</div>
 
-	<ul class="mui-table-view">
-		<li class="mui-table-view-cell">
-			<div class="order_num">
-				转换usdt等值
-			</div>
-		</li>
-		<li class="mui-table-view-cell">
-			<div class="" style="float: left; width: 40%;">
-				交易时usdt价格
-			</div>
-			<div class="" style="float: left;" id="UsdtPriceArea"></div>
-		</li>
-		<li class="mui-table-view-cell">
-			<div class="" style="float: left; width: 40%;">
-				等值usdt数量
-			</div>
-			<div class="" style="float: left;" id="UsdtAmountArea"></div>
-		</li>
-	</ul>
 	<div class="mui-button-row">
 		<!-- 根据不同的状态显示按钮 -->
 		<div style="display: none;" id="Tips">等待对方确认付款</div>
@@ -302,7 +283,7 @@
 
     function ensureGet(){
         var btnArray = ['取消', '确认'];
-        mui.confirm("请确认", '已收款，释放TF', btnArray, function(e) {
+        mui.confirm("请确认", '已收款，释放USDT', btnArray, function(e) {
             if(e.index == 0) {
                 return;
             }
