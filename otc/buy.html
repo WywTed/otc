@@ -321,13 +321,14 @@
         $("#GdMoney").val(jsAjax.numFormat(
             jsAjax.numMulti(data.preTrade.allAmount, data.preTrade.ideaUnivalent), 4))
 
-        if(data.payChannels.alipay) {
+        /*if(data.payChannels.alipay) {
             $("#AlipayDiv").show();
             $("#AlipayArea").text(data.payChannels.alipay.payAccount);
-        }
+        }*/
         if(data.payChannels.unionpay) {
             $("#UnionpayDiv").show();
-            $("#UnionpayArea").text(data.payChannels.unionpay.payAccount)
+            var toPayInfo = data.preTrade.bank + " | " + data.preTrade.payAccount;
+            $("#UnionpayArea").text(toPayInfo)
         }
     });
 
