@@ -25,6 +25,8 @@
 
 </div>
 
+<a type="button" class="mui-btn mui-btn-primary mui-btn-block" href="payinfo.html">添加银行卡信息</a>
+
 <script src="js/mui.min.js"></script>
 <script src="js/mui.pullToRefresh.js"></script>
 <script src="js/mui.pullToRefresh.material.js"></script>
@@ -33,9 +35,9 @@
 <script src="js/app.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/template" id="tpl-paychannel">
     <%
-    <div class="mui-table" oncliick="">
+    <div class="mui-table" onclick="toChannelInfo(<%=item.id%>)">
         <div class="mui-table-cell mui-col-xs-10">
-            <p><%=item.payChannel%> | <%=item.realName%> </p>
+            <p><%=item.bank%> <%=item.payChannel%> | <%=item.realName%> </p>
             <p>账号： <%=item.payAccount%></p>
         </div>
     </div>
@@ -86,7 +88,9 @@
                 item: {
                     realName: value.realName,
                     payChannel: paychannel,
-                    payAccount: value.payAccount
+                    payAccount: value.payAccount,
+                    bank: value.bank,
+                    id: value.id
                 },
             })
             li.innerHTML = str;
@@ -95,6 +99,9 @@
         return fragment;
     }
 
+    function toChannelInfo(id) {
+        location.href = "./payinfo.html?payChannelId=" + id;
+    }
 </script>
 </body>
 </html>

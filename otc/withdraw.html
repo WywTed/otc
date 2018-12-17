@@ -187,9 +187,9 @@
 					type: "post",
 				};
 				jsAjax.ajax(params, function(data) {
-					mui.toast("提现成功。")
-					mui.back();
-				}, function(XMLHttpRequest) {
+                    mui.alert("提现申请已成功，数字货币会在2个工作日内到账。")
+                    mui.back()
+                }, function(XMLHttpRequest) {
 					$(target).attr("disabled", "");
 					if(XMLHttpRequest == "relogin") {
 						mui.alert("登陆过期，请重新登陆")
