@@ -51,11 +51,11 @@
 					<label>确认密码</label>
 					<input type="password" class="mui-input-password" placeholder="请输入新密码" id="NewPwd2Ipt">
 				</div>
-				<div class="mui-input-row">
+				<!--<div class="mui-input-row">
 					<label>验证码</label>
 					<button class="yzm_btn" type="button" onclick="sendCode()">获取验证码</button>
 					<input type="text" id="CodeIpt" class="mui-input-clear mui-input" placeholder="请输入验证码" style="width: 39%;" />
-				</div>
+				</div>-->
 				<div class="mui-button-row">
 					<button type="button" class="mui-btn mui-btn-primary" onclick="changeLoginPwd()">确认</button>
 					<button type="reset" class="mui-btn mui-btn-danger">重置</button>
@@ -69,16 +69,16 @@
 		<script type="text/javascript">
 			mui.init()
 			var downTime = 60;
-			document.querySelector(".yzm_btn").onclick = function() {
+			/*document.querySelector(".yzm_btn").onclick = function() {
 				console.log("获取验证码")
 				setTime();
-			}
+			}*/
 			//页面左上角返回时转到相应页面
 			document.querySelector("header").querySelector("a").onclick = function() {
 				localStorage.setItem("PAGE_RETURN", 2)
 			}
 
-			function setTime() {
+			/*function setTime() {
 				setTimeout(function() {
 					if(downTime > 0) {
 						document.querySelector(".yzm_btn").disabled = "disabled"; //禁用获取验证码按钮
@@ -91,7 +91,7 @@
 						downTime = 60;
 					}
 				}, 1000)
-			}
+			}*/
 
 			function changeLoginPwd() {
 				// todo 修改密码需要手机号验证码验证
@@ -99,7 +99,7 @@
 				var _oldLoginPassword = $("#OriginPwdIpt").val();
 				var _newLoginPassword = $("#NewPwdIpt").val();
 				var _newLoginPassword2 = $("#NewPwd2Ipt").val();
-				var _CodeIpt = $("#CodeIpt").val();
+				// var _CodeIpt = $("#CodeIpt").val();
 				if(!_oldLoginPassword) {
 					mui.alert("请输入原密码")
 					return;
@@ -120,10 +120,10 @@
 					mui.alert("两次密码不一致")
 					return;
 				}
-				if(!_CodeIpt) {
+				/*if(!_CodeIpt) {
 					mui.alert("请输入验证码")
 					return;
-				}
+				}*/
 				var data = {};
 				data.newLoginPassword = _newLoginPassword;
 				data.oldLoginPassword = _oldLoginPassword;

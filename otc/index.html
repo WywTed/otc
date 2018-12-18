@@ -183,12 +183,10 @@
             margin-bottom: 20px;
         }
 
-        .inmoney {
-
-        }
-
-        .platform {
-
+        .msg-tip-right{
+            color: red;
+            padding: 5px;
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -332,6 +330,15 @@
                         <li class="mui-table-view-cell">
                             <a class="mui-navigate-right" href="mypreorders.html">
                                 我的挂单
+                            </a>
+                        </li>
+                    </ul>
+                    <br />
+                    <ul class="mui-table-view">
+                        <li class="mui-table-view-cell">
+                            <a class="mui-navigate-right" href="messages.html">
+                                未读消息
+                                <span class="msg-tip-right"></span>
                             </a>
                         </li>
                     </ul>
@@ -793,6 +800,8 @@
         $("#UserTradeCount").text(info.tradeCount);
         // $("#UserUpcount").text(info.upcount);
         // $("#UserScore").text(info.score);
+
+        $(".msg-tip-right").text(info.messageCount)
 
         if(info.accountInfo){
             $("#UserBalance").text(info.accountInfo.USDT_balance);

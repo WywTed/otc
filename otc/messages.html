@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>未读消息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="css/mui.min.css" rel="stylesheet" />
+    <link href="css/base.css" rel="stylesheet" />
+
+    <!-- http://dev.dcloud.net.cn/mui/pulldown/ -->
+    <style type="text/css">
+        #message-div{
+            margin-top: 50px;
+        }
+        .msg-content{
+            color: lightcoral;
+        }
+        .btn-div{
+            /*margin: 20px;*/
+            font-size: 16px;
+            color: black;
+            border-radius: 5px;
+            font-family: Consolas;
+            width: auto;
+            border: solid 1px cornflowerblue;
+        }
+        .mui-btn-block{
+            height: auto;
+            padding: 5px;
+            background-color: cornflowerblue;
+        }
+    </style>
+</head>
+<body>
+
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">未读消息</h1>
+</header>
+
+<div id="message-div">
+    <button onclick="readAll()" class="mui-btn mui-btn-block ">一键全读</button>
+    <div id="message-box"></div>
+</div>
+
+
+<script src="js/mui.min.js"></script>
+<script src="js/mui.pullToRefresh.js"></script>
+<script src="js/mui.pullToRefresh.material.js"></script>
+<script src="js/arttmpl.js"></script>
+<script src="js/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/template" id="tpl-message">
+    <%
+    <div class="mui-table" onclick="toChannelInfo(<%=item.sourceId%>)">
+        <div class="mui-table-cell mui-col-xs-10">
+            <p><%=item.sourceType%> | <%=item.sourceId%> </p>
+            <p class="msg-content"><%=item.content%></p>
+            <p><%=item.createTime%></p>
+        </div>
+    </div>
+    %>
+</script>
+<script type="text/javascript">
+    mui.init();
+    document.querySelector("header").querySelector("a").onclick = function() {
+        localStorage.setItem("PAGE_RETURN", 2)
+    }
+    (function($){
+        listMessage();
+    })()
+
+    function listMessage(){
+        var param = {
+            url: "/communicate/list"
+        }
+        jsAjax.ajax(param, function(data){
+            var fragment = document.createDocumentFragment();
+            var li;
+            $.each(data.data, function(index, value){
+                li = document.createElement('li');
+                li.className = 'mui-table-view-cell';
+                value.createTime = jsAjax.formatLongTime(value.createTime)
+                switch(value.sourceType){
+                    case "AutoSelectToSell": value.sourceType = "自动匹配出售";break;
+                    case "TradeEnsurePayNotifyMsg": value.sourceType = "订单已确认付款";break;
+                }
+                var str = template('tpl-message', {
+                    item: value,
+                })
+                li.innerHTML = str;
+                fragment.appendChild(li);
+            });
+            $("#message-box").append(fragment);
+        }, function(){
+
+        });
+    }
+
+    function readAll(){
+        var param = {
+            url: "/communicate/readAll",
+            type: "POST"
+        }
+        jsAjax.ajax(param, function(data){
+            mui.back()
+        }, function(){
+
+        });
+
+    }
+</script>
+</body>
+</html>

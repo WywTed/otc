@@ -74,28 +74,28 @@
 	%>
 </script>
 
-		<script type="text/javascript">
-			mui.init();
-			(function($) {
-				//页面左上角返回时转到相应页面
-				document.querySelector("header").querySelector("a").onclick = function() {
-					localStorage.setItem("PAGE_RETURN", 2)
-				}
-				getCoinAddress(function() {
+<script type="text/javascript">
+    mui.init();
+    (function($) {
+        //页面左上角返回时转到相应页面
+        document.querySelector("header").querySelector("a").onclick = function() {
+            localStorage.setItem("PAGE_RETURN", 2)
+        }
+        getCoinAddress(function() {
 
-				})
-			})(mui)
+        })
+    })(mui)
 
-	function ensureCharge(){
-		var params = {
-		    url: "/member/coin/charge?coinType=TF",
-		}
-		jsAjax.ajax(params, function(data){
+    function ensureCharge(){
+        var params = {
+            url: "/member/coin/charge?coinType=USDT",
+        }
+        jsAjax.ajax(params, function(data){
             mui.toast("查询完毕。");
-		}, function(error){
-		    mui.toast(error.responseJSON.message)
-		})
-	}
+        }, function(error){
+            mui.toast(error.responseJSON.message)
+        })
+    }
 
     function getCoinAddress(){
         var params = {
@@ -116,7 +116,7 @@
         var doc = $("#CoinAddressUl");
         doc.empty();
         doc.append(createCoinAddressShowFragment(data));
-		for ( var key in data) {
+        for ( var key in data) {
             createUserQRCodeImage(data[key], key+"Img");
         }
     }
@@ -137,7 +137,7 @@
                 })
                 li.innerHTML = str;
                 fragment.appendChild(li);
-			}
+            }
         };
         return fragment;
     }
@@ -153,37 +153,37 @@
             text: coinAddress
         });
     }
- function copyAddress(id){
-     const input = document.createElement('input');
-     document.body.appendChild(input);
-     input.setAttribute("type","text");
-     input.setAttribute('value', $("#" + id).text().trim());
-     input.select();
-     if (document.execCommand('copy')) {
-         document.execCommand('copy');
-        mui.alert('复制成功');
-     }
-     document.body.removeChild(input);
-	}
-    
+    function copyAddress(id){
+        const input = document.createElement('input');
+        document.body.appendChild(input);
+        input.setAttribute("type","text");
+        input.setAttribute('value', $("#" + id).text().trim());
+        input.select();
+        if (document.execCommand('copy')) {
+            document.execCommand('copy');
+            mui.toast('复制成功');
+        }
+        document.body.removeChild(input);
+    }
+
     // function copyAddress(id) {
-		// 		var oInput = document.createElement('input');
-		// 		oInput.value = $("#" + id).text().trim();
-		// 		var u = navigator.userAgent;
-		// 		var ua = window.navigator.userAgent.toLowerCase();
-		// 		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-		// 		if(isiOS) {
-		// 			oInput.disabled = "disabled";
-		// 		}
-		// 		//oInput.disabled = "disabled";
-		// 		document.body.appendChild(oInput);
-		// 		oInput.select(); // 选择对象
-		// 		oInput.setSelectionRange(0, oInput.value.length);
-		// 		document.execCommand("Copy"); // 执行浏览器复制命令
-		// 		oInput.className = 'oInput';
-		// 		oInput.style.display = 'none';
-		// 		mui.alert('复制成功');
-		// 	}
+    // 		var oInput = document.createElement('input');
+    // 		oInput.value = $("#" + id).text().trim();
+    // 		var u = navigator.userAgent;
+    // 		var ua = window.navigator.userAgent.toLowerCase();
+    // 		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    // 		if(isiOS) {
+    // 			oInput.disabled = "disabled";
+    // 		}
+    // 		//oInput.disabled = "disabled";
+    // 		document.body.appendChild(oInput);
+    // 		oInput.select(); // 选择对象
+    // 		oInput.setSelectionRange(0, oInput.value.length);
+    // 		document.execCommand("Copy"); // 执行浏览器复制命令
+    // 		oInput.className = 'oInput';
+    // 		oInput.style.display = 'none';
+    // 		mui.alert('复制成功');
+    // 	}
 </script>
 </body>
 
